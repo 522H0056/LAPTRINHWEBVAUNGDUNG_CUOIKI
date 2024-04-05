@@ -35,9 +35,6 @@
 
         /* for toggle behavior */
 
-        #sidebar.active {
-            margin-left: -17rem;
-        }
 
         #content.active {
             width: 100%;

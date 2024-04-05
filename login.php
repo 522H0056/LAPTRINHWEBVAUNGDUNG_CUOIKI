@@ -1,3 +1,17 @@
+<?php
+  $error = ''; // Khởi tạo biến lỗi trước
+  if (isset($_POST['email']) && isset($_POST['password'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    if ($email !== 'duc@gmail.com' || $password !== '123456') {
+      $error =  'Invalid username or password';
+    } else {
+      header('Location: BAITAPCUOITHANG4/home.php');
+      exit(); 
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +49,7 @@
                   </div>
                 </div>
               </div>
-              <form action="#!">
+              <form method="post" action="">
                 <div class="row gy-3 overflow-hidden">
                   <div class="col-12">
                     <div class="form-floating mb-3">
