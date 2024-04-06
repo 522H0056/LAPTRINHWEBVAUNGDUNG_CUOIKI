@@ -1,16 +1,27 @@
 <?php
-  $error = ''; // Khởi tạo biến lỗi trước
+  require_once('db/account_db.php');
+  session_start();
+  if (isset($_SESSION['gmail'])) {
+    header('Location:home.php');
+    die();
+}
+  $email = '';
+  $password = '';
+  $error = ''; 
+
   if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if ($email !== 'duc@gmail.com' || $password !== '123456') {
-      $error =  'Invalid username or password';
+    if (!login($email, $password)) {
+        $error = 'Incorrect email or password';
     } else {
-      header('Location: BAITAPCUOITHANG4/home.php');
-      exit(); 
+        $_SESSION['email'] = $email;
+        header('Location: home.php');
+        exit(); 
     }
-  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,6 +73,14 @@
                       <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
                       <label for="password" class="form-label">Password</label>
                     </div>
+                  </div>
+                  <div class="col-12">
+                    <!-- Hiển thị thông báo lỗi -->
+                    <?php if ($error !== ''): ?>
+                      <div class="alert alert-danger" role="alert">
+                        <?php echo $error; ?>
+                      </div>
+                    <?php endif; ?>
                   </div>
                   <div class="col-12">
                     <div class="form-check">

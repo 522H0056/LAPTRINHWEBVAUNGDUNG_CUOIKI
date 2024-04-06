@@ -6,8 +6,48 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/logins/login-9/assets/css/login-9.css">
     <title>Document</title>
+
+    <style>
+        #header ul {
+          list-style-type: none;
+        }
+        
+        #header ul li {
+          display: inline;
+          margin-right: 40px;
+        }
+        .userHeader {
+          float: right;
+        }
+        #header ul .listHeader {
+          transition: color 0.2s ease, font-size 0.8s ease, background-color 0.8s ease;   /* Thêm hiệu ứng trễ 0.3s */
+        }
+        #header ul .listHeader:hover {
+          font-size: 120%; /* Làm to chữ khi hover */
+          color: white;
+          background-color: #3382d6; /* Màu primary của Bootstrap */;
+        }
+        #header {
+          position: relative;
+        }
+        #header ul .listHeader{
+          padding: 10px;
+          border-radius: 10px ;
+        }
+        
+    </style>
 </head>
 <body>
+<header class="p-3 mb-3 border-bottom bg-white" id="header">
+        <ul>
+          <li class="listHeader"><b></b>Home</li>
+          <li class="listHeader">About</li>
+          <li class="listHeader">My course</li>
+          <li class="listHeader">FAQ</li>
+          <li class="userHeader ">avatarhere</li>
+          <li class="userHeader ">Log out</li>
+        </ul>
+    </header>
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
           <div class="row justify-content-center align-items-center h-100">
