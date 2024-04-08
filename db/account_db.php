@@ -23,6 +23,35 @@
             return false; // Sai mật khẩu
         }
     }
-    
+
+    function register($email, $firstname, $lastname, $password, $isActive) {
+        $sql = "SELECT COUNT(*) FROM students WHERE email = ?";
+        $conn = create_connection();
+
+        $stm = $conn->prepare($sql);
+        $stm->bind_param('s', $email);
+        $stm->execute();
+
+        $result = $stm->get_result();
+        $exists = $result->fetch_array()[0] === 1;
+
+        if($exists) {
+            return "Can not register because email exists";
+        }
+
+        $isActive = 0; // Assigning the value to a variable
+
+        $sql = "INSERT INTO students(email, password, FirstName, LastName, isActive) VALUES (?, ?, ?, ?, ?)";
+        
+        $stm = $conn->prepare($sql);
+        $stm->bind_param('ssssi', $email, $password, $firstname, $lastname, $isActive); // Pass the variable as reference
+
+        if ($stm->execute()) {
+            return true;
+        }
+        return $stm->error;
+    }
+
 ?>
+
 

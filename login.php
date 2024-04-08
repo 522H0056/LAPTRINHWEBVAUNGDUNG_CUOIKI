@@ -1,7 +1,7 @@
 <?php
   require_once('db/account_db.php');
   session_start();
-  if (isset($_SESSION['gmail'])) {
+  if (isset($_SESSION['email'])) {
     header('Location:home.php');
     die();
 }

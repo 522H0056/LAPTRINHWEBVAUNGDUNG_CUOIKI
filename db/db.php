@@ -2,7 +2,7 @@
     define ('HOST','127.0.0.1');
     define ('USER','root');
     define ('PASS','');
-    define ('DB_NAME','webck54');
+    define ('DB_NAME','7thang415h10');
 
     function create_connection( )  {
         $conn = new mysqli(HOST,USER,PASS,DB_NAME);
@@ -12,3 +12,4 @@
         return $conn;
     }
     $conn = create_connection();
+?>
