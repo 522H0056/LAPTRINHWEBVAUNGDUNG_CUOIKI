@@ -93,37 +93,34 @@ body {
   <div class="row">
     <div class="column">
       <div class="card">
-        <img src="Phong.jpg" alt="Phong">
+        <img src="img/Phong.jpg" alt="Phong">
           <div class="container">
             <h3>Phong</h3>
             <p class="title">Course Creator & Instructor</p>
             <p>Phong is the visionary behind our free course. With years of experience in education and a passion for sharing knowledge, he's dedicated to making learning accessible to all.</p>
             <p>Contact: phong@example.com</p>
-            <p><a href="#" class="button">Contact</a></p>
           </div>
       </div>
   </div>
   <div class="column">
     <div class="card">
-      <img src="Duc.jpg" alt="Duc">
+      <img src="img/Duc.jpg" alt="Duc">
       <div class="container">
         <h3>Duc</h3>
         <p class="title">Content Developer</p>
         <p>Duc brings creativity and expertise to our course content. As an experienced educator and content creator, he ensures our materials are engaging and informative.</p>
         <p>Contact: duc@example.com</p>
-        <p><a href="#" class="button">Contact</a></p>
       </div>
     </div>
   </div>
   <div class="column">
     <div class="card">
-      <img src="Quan.jpg" alt="Quan" >
+      <img src="img/Quan.jpg" alt="Quan" >
       <div class="container">
         <h3>Quan</h3>
         <p class="title">Graphic Designer</p>
         <p>Quan adds visual appeal to our course materials. With a keen eye for design and detail, he ensures our content is not only informative but also visually engaging.</p>
         <p>Contact: quan@example.com</p>
-        <p><a href="#" class="button">Contact</a></p>
       </div>
     </div>
   </div>

@@ -1,30 +1,8 @@
 <?php
-require_once('db/account_db.php');
+include('db/register_db.php');
 
-$error = '';
-$first_name = '';
-$last_name = '';
-$email = '';
-$user = '';
-$pass = '';
-$pass_confirm = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['first']) && isset($_POST['last']) && isset($_POST['email'])
-        && isset($_POST['user']) && isset($_POST['pass']) && isset($_POST['pass-confirm'])) {
-        // Xử lý đăng ký người dùng
-        $first_name = $_POST['first'];
-        $last_name = $_POST['last'];
-        $email = $_POST['email'];
-        $user = $_POST['user'];
-        $pass = $_POST['pass'];
-        $pass_confirm = $_POST['pass-confirm'];
-        
-        // Tiếp tục với xử lý đăng ký người dùng ở đây
-    } else {
-        $error = 'Please fill in all required fields.';
-    }
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -48,48 +26,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="card-body p-5">
                                 <h2 class="text-uppercase text-center mb-5">Create an account</h2>
                                 <form method="post" action="" novalidate>
+                                    
                                     <div class="form-outline mb-4">
-                                        <input value="<?= htmlspecialchars($first_name) ?>" name="first" required type="text" id="firstname" class="form-control form-control-lg" autocomplete="off">
+                                        <input  name="first" type="text" id="firstname" class="form-control form-control-lg" autocomplete="off">
                                         <label class="form-label" for="firstname">First name</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input value="<?= htmlspecialchars($last_name) ?>" name="last" required type="text" id="lastname" class="form-control form-control-lg" autocomplete="off">
+                                        <input  name="last" required type="text" id="lastname" class="form-control form-control-lg" autocomplete="off">
                                         <label class="form-label" for="lastname">Last Name</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input value="<?= htmlspecialchars($email) ?>" name="email" required type="email" id="email" class="form-control form-control-lg" autocomplete="off">
+                                        <input  name="email" required type="email" id="email" class="form-control form-control-lg" autocomplete="off">
                                         <label class="form-label" for="email">Your Email</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input value="<?= htmlspecialchars($pass) ?>" name="pass" required type="password" id="password" class="form-control form-control-lg" autocomplete="off">
+                                        <input  name="pass" required type="password" id="password" class="form-control form-control-lg" autocomplete="off">
                                         <label class="form-label" for="password">Password</label>
                                     </div>
+                                    
+                                    <?php
+                                        if(isset($_SESSION['status'])) {
+                                            echo "<h4>" .$_SESSION['status']. "</h4>";
+                                            unset($_SESSION['status']);
+                                        }                                        
+                                    ?>
 
-                                    <div class="form-outline mb-4">
-                                        <input value="<?= htmlspecialchars($pass_confirm) ?>" name="pass-confirm" required type="password" id="pass-confirm" class="form-control form-control-lg" autocomplete="off">
-                                        <label class="form-label" for="pass-confirm">Repeat your password</label>
-                                    </div>
-                                    <div class="col-12">
-                                        <!-- Hiển thị thông báo lỗi -->
-                                        <?php if ($error !== ''): ?>
-                                          <div class="alert alert-danger" role="alert">
-                                            <?php echo $error; ?>
-                                          </div>
-                                        <?php endif; ?>
-                                      </div>  
-
-                                    <div class="form-check d-flex justify-content-center mb-5">
-                                        <input class="form-check-input me-2" type="checkbox" value="" id="agree" required>
-                                        <label class="form-check-label" for="agree">
-                                            I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
-                                        </label>
-                                    </div>
-
+                                    
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                                        <button type="submit" name="register_btn" class="btn btn-primary btn-lg">Register</button>
                                     </div>
 
                                     <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="login.php" class="fw-bold text-body"><u>Login here</u></a></p>
