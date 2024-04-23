@@ -206,7 +206,7 @@
                 <ul class="links">
                 <li><a href="home.php">Home</a></li>
                 <li><a href="about_us.php">About</a></li>
-                <li><a href="hero">My course</a></li>
+                <li><a href="mycourse.php">My course</a></li>
                 <li><a href="faq.php">FAQ</a></li>
                 </ul>
                 <a href="?logout"><b>Log out</b></a>

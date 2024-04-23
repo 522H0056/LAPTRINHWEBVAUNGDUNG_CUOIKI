@@ -31,7 +31,8 @@ function sendemail($email,$token) {
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
     $mail->Subject = 'Email verification';
-    $mail->Body    = "<a href ='http://localhost/BAITAPCUOITHANG4/activate.php?token=$token'>Click to authorize</a>";
+    $mail->Body    = "<a href ='http://localhost/BAITAPCUOITHANG4/activate.php?token=$token'>Click here to activate your account</a>";
+
     $mail->AltBody = "";
 
 
@@ -58,11 +59,14 @@ function sendemail($email,$token) {
         $query = "INSERT INTO students (email,password,FirstName,LastName,Token) VALUES ('$email','$pass','$first','$last','$token')";
         $query_run = mysqli_query($conn, $query);
 
-        if($query_run) {
+        if ($query_run) {
             sendemail("$email","$token");
-            $_SESSION['status'] = "Now check email";
             $_SESSION['token'] = $token;
-            header("Location: activate.php");
+            echo '<script>';
+            echo 'alert("Verification link has been sent to your email. Please check your inbox or spam folder.");';
+            echo 'window.location.href = "login.php";'; // Chuyển hướng người dùng đến trang login.php
+            echo '</script>';
+            exit();
         }
         else {
             $_SESSION['status'] = "Failed";

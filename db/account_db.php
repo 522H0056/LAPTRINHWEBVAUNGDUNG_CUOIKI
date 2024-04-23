@@ -19,12 +19,14 @@ function login($username, $password) {
 
     // Kiểm tra mật khẩu
     if ($password === $data['password']) {
-        return true; // Đăng nhập thành công
+        // Kiểm tra xem trường "activated" có tồn tại trong mảng dữ liệu hay không
+        if (array_key_exists('isActive', $data) && $data['isActive'] == 1) {
+            return true; // Đăng nhập thành công
+        } else {
+            return 'not_activated'; // Tài khoản chưa được kích hoạt
+        }
     } else {
         return false; // Sai mật khẩu
     }
 }
-
-
-
 ?>

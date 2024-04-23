@@ -61,11 +61,11 @@ if (!isset($_SESSION['email'])) {
                             <td>
                                 <form action="enrollment.php" method="post" class="d-inline">
                                     <input type="hidden" name="id_course" value="<?= $id_course ?>">
-                                    <button type="submit" class="btn btn-primary">Enroll</button>
+                                    <button type="submit" class="btn btn-primary">Visit</button>
                                 </form>
-                                <form action="delete_course.php" method="post" class="d-inline">
+                                <form action="db/delete_course.php" method="post" class="d-inline">
                                     <input type="hidden" name="id_course" value="<?= $id_course ?>">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
                                 </form>
                             </td>
                         </tr>
