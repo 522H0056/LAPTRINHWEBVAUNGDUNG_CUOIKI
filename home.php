@@ -1,5 +1,5 @@
 <?php
-  require_once('db/product_db.php');
+  require_once('db/course_db.php');
   require_once('db/name_in_header_db.php');
   
   if (session_status() == PHP_SESSION_NONE) {
@@ -28,186 +28,16 @@
     <title>Course Detail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <style>
-        #searchbar {
-            width: 80%; /* Đặt độ rộng là 80% */
-            margin: 20px auto;
-            display: flex;
-            outline: none; /* Loại bỏ viền khi input được chọn */
-            flex-wrap: wrap; /* Cho phép các phần tử xuống dòng khi không còn không gian */
-            justify-content: space-between; /* Phân chia không gian ngang một cách đều giữa các phần tử */
-        }
-        *{
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        header{
-          position: relative;
-          padding: 0 2rem;
-        }
-
-        .navbar{
-          width: 100%;
-          height: 110px;
-          max-width: 1200px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        li{
-          list-style: none;
-        }
-        a{
-          text-decoration: none;
-          color: white;
-          font-size: 1rem;
-        }
-        a:hover{
-          color: blue;
-          font-size: 120%;
-        }
-        i{
-          color: white;
-        }
-
-        .navbar .logo a{
-          font-size: 1.5rem;
-          font-weight: bold;
-        }
-
-        .navbar .links{
-          display: flex;
-          gap: 2rem;
-        }
-
-        .navbar .toggle_btn{
-          color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          display: none;
-        }
-
-        @media(max-width: 992px){
-          .navbar .links{
-            display: none;
-          }
-
-          .navbar .toggle_btn{
-            display: block;
-          }
-
-        }
-        .dropdown_menu{
-          position: absolute;
-          right: 2rem;
-          top: 60px;
-          height: 0;
-          width: 200px;
-          background-color: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(75px);
-          border-radius: 10px;
-          overflow: hidden;
-          transition: height .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
         
-        .dropdown_menu li{
-          padding: 0.7rem;
-          display: flex;
-          align-items: center;
-          justify-self: center;
-        }
-
-        .dropdown_menu.open{
-          height: 200px;
-        }
-
-        body{
-          height: 100vh;
-          background-size: cover;
-          background-position: center;
-        }
-
-        @media(max-width: 170px){
-          .dropdown_menu{
-            left: 2rem;
-            width: unset;
-          }
-        }
-
-
-        footer {
-          background-color: #333;
-          color: #fff;
-          padding: 40px 0;
-        }
-
-        footer h4 {
-        margin-bottom: 20px;
-        }
-
-        footer p {
-            margin-bottom: 10px;
-        }
-
-        .social-icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .social-icons li {
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .social-icons li:last-child {
-            margin-right: 0;
-        }
-
-        .social-icons a {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        @media (max-width: 576px) {
-            footer .container {
-                text-align: center;
-            }
-        }
-        img {
-          width:300px;
-          height:300px;
-        }
-        .container {
-            display: flex; /* Sử dụng mô hình flexbox */
-            flex-wrap: wrap; /* Cho phép các phần tử xuống dòng khi không còn không gian */
-            justify-content: space-between; /* Phân chia không gian ngang một cách đều giữa các phần tử */
-        }
-        #enroll_button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #007bff; /* Màu chính (primary) của Bootstrap */
-            color: #fff; /* Màu chữ trắng */
-            text-decoration: none; /* Loại bỏ gạch chân mặc định */
-            border-radius: 0.25rem; /* Bo tròn góc */
-            border: none; /* Loại bỏ viền */
-        }
-
-        /* CSS khi hover */
-        #enroll_button:hover {
-            background-color: #0056b3; /* Màu hover của Bootstrap */
-        }
     </style>
 
 </head>
 <body class="bg-primary">
     
     <?php
-      $courses = get_products();
+      $courses = get_courses();
       $name_of_user = get_name_in_header();
     ?>
 

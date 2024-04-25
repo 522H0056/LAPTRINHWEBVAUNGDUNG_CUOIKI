@@ -1,24 +1,26 @@
 <?php
-  require_once('db/lesson_db.php');
-  require_once('db/course_user.php');
-  if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-  }
+    require_once('db/lesson_db.php');
+    require_once('db/course_user.php');
+    require_once('db/load_coursename_to_detaied_course.php');
+    $id_course = $_GET['id_course'];
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
 
-  if (isset($_GET['logout'])) {
-    $_SESSION = array();
+    if (isset($_GET['logout'])) {
+        $_SESSION = array();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
 
-    session_destroy();
+    if (!isset($_SESSION['email'])) {
+        header('Location:login.php');
+        die();
+    }
 
-    header("Location: login.php");
-    exit;
-}
-
-
-  if (!isset($_SESSION['email'])) {
-    header('Location:login.php');
-    die();
-  }
+    $lesson = get_lesson();
+    $course = get_title_of_course($id_course)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +32,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         #searchbar {
-            width: 80%; /* Đặt độ rộng là 80% */
+            width: 80%;
             margin: 20px auto;
             display: block;
-            outline: none; /* Loại bỏ viền khi input được chọn */
+            outline: none;
         }
         *{
           margin: 0;
@@ -183,77 +185,108 @@
         #enroll_button {
             display: inline-block;
             padding: 0.5rem 1rem;
-            background-color: #007bff; /* Màu chính (primary) của Bootstrap */
-            color: #fff; /* Màu chữ trắng */
-            text-decoration: none; /* Loại bỏ gạch chân mặc định */
-            border-radius: 0.25rem; /* Bo tròn góc */
-            border: none; /* Loại bỏ viền */
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            border: none;
         }
 
-        /* CSS khi hover */
         #enroll_button:hover {
-            background-color: #0056b3; /* Màu hover của Bootstrap */
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body class="bg-primary">
-<?php
-      $lesson = get_lesson();
-?>
-<header class=" border-bottom " id="header">
-            <div class="navbar">
-                <div class="logo"><a href="#">Free Courses</a></div>
-                <ul class="links">
-                <li><a href="home.php">Home</a></li>
-                <li><a href="about_us.php">About</a></li>
-                <li><a href="mycourse.php">My course</a></li>
-                <li><a href="faq.php">FAQ</a></li>
-                </ul>
-                <a href="?logout"><b>Log out</b></a>
-                <div class="toggle_btn">
-                <i class="fa-solid fa-bars"></i>
-                </div>
 
-                <div class="dropdown_menu">
-        <ul> <!-- Start unordered list -->
+<header class="border-bottom" id="header">
+    <div class="navbar">
+        <div class="logo"><a href="#">Free Courses</a></div>
+        <ul class="links">
             <li><a href="home.php">Home</a></li>
             <li><a href="about_us.php">About</a></li>
-            <li><a href="hero">My course</a></li>
+            <li><a href="mycourse.php">My course</a></li>
             <li><a href="faq.php">FAQ</a></li>
-        </ul> <!-- End unordered list -->
+        </ul>
+        <a href="?logout"><b>Log out</b></a>
+        <div class="toggle_btn">
+            <i class="fa-solid fa-bars"></i>
         </div>
 
-    </header>
-
-    <div class="container mt-5 bg-white p-5">
-        <div class="row row-cols-1  row-cols-12">
-              <?php
-                 foreach ($lesson as $l)
-                 {
-                  $title = $l['Title'];
-                  $description = $l['Description'];
-                  $id_course = $l['course_id'];
-                  $video = $l['video'];
-                  ?>
-                    <div class="col mb-4 row-cols-1">
-                        <div class="card">
-                            <!-- <img src=<?=$image?> class="card-img-top" alt="Course Image"> -->
-                            <div class="card-body">
-                                <h5 class="card-title"><?=$title?></h5>
-                                <p class="card-text"><?=$description?></p>
-                                <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  <?php
-                 }
-              ?>
+        <div class="dropdown_menu">
+            <ul>
+                <li><a href="home.php">Home</a></li>
+                <li><a href="about_us.php">About</a></li>
+                <li><a href="hero">My course</a></li>
+                <li><a href="faq.php">FAQ</a></li>
+            </ul>
         </div>
     </div>
+</header>
+<?php
+    foreach ($course as $c) {
+        $title = $c['Title'];
+?>
+<div class="col mb-4 row-cols-1">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title"><?=$title?></h2>
+        </div>
+    </div>
+</div>
+<?php
+    }
+?>
 
-    <footer>
+<div class="container mt-5 bg-white p-5">
+    <div class="row row-cols-1 row-cols-12">
+        <?php
+            foreach ($lesson as $l) {
+                $title = $l['Title'];
+                $description = $l['Description'];
+                $id_course = $l['course_id'];
+                $video = $l['video'];
+                $lesson = $l['lession_id'];
+        ?>
+        <div class="col mb-4 row-cols-1">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><?=$title?></h5>
+                    <p class="card-text"><?=$description?></p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
+                    </div>
+                    <div class="form-check">
+                    <form action="" method="post">
+                        <div class="form-check">
+                        <form action="" method="post">
+                            <!-- Sử dụng Bootstrap grid để căn chỉnh -->
+                            <div class="mt-2">
+                                <div class="col-auto">
+                                    <!-- Sử dụng lớp Bootstrap để tạo nút -->
+                                    <button type="submit" class="btn btn-secondary">Seen</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+    </div>
+    <form action="feedback.php?id_course=<?= $id_course ?>" method="post">
+    <button id="submit_btn" class="btn btn-primary" onclick="completeCourse()">Complete the course</button>
+
+
+    </form>
+</div>
+
+<footer>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -273,5 +306,10 @@
         </div>
     </div>
 </footer>
+
+
+
+
+
 </body>
 </html>

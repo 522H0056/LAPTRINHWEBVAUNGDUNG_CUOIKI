@@ -1,3 +1,24 @@
+<?php
+  require_once('db/name_in_header_db.php');
+  
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+  if (isset($_GET['logout'])) {
+    $_SESSION = array();
+
+    session_destroy();
+
+    header("Location: login.php");
+    exit;
+  }
+
+
+  if (!isset($_SESSION['email'])) {
+    header('Location:login.php');
+    die();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +26,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us</title>
 <link rel="stylesheet" type="text/css" href="about_us.css">
+<link rel="stylesheet" href="style.css">
 <style>
 /* General styles */
 body {
@@ -81,6 +103,39 @@ body {
 </style>
 </head>
 <body>
+<header class=" border-bottom " id="header">
+      <div class="navbar">
+        <div class="logo"><a href="#">Free Courses</a></div>
+        <ul class="links">
+          <li><a href="home.php">Home</a></li>
+          <li><a href="about_us.php">About</a></li>
+          <li><a href="mycourse.php">My course</a></li>
+          <li><a href="faq.php">FAQ</a></li>
+        </ul>
+        <?php
+          foreach ($name_of_user as $s) {
+              $first = $s['FirstName'];
+              $last = $s['LastName'];
+              echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+          }
+          ?>
+
+        
+        <a href="?logout"><b>Log out</b></a>
+        <div class="toggle_btn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="dropdown_menu">
+  <ul> <!-- Start unordered list -->
+    <li><a href="home.php">Home</a></li>
+    <li><a href="about_us.php">About</a></li>
+    <li><a href="hero">My course</a></li>
+    <li><a href="faq.php">FAQ</a></li>
+  </ul> <!-- End unordered list -->
+</div>
+
+    </header>
   <header class="hd">
     <div >
       <h1>About Our Free Course</h1>
@@ -125,6 +180,27 @@ body {
     </div>
   </div>
 </div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Contact Information</h4>
+                <p>Email: student@tdtu.edu.com</p>
+                <p>Phone: +1234567890</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Follow Us</h4>
+                <ul class="social-icons">
+                    <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
 

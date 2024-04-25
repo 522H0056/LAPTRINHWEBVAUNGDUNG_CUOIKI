@@ -1,6 +1,6 @@
 <?php
     require_once('db.php');
-    function get_products()
+    function get_courses()
     {
         $sql = "select * from courses";
         $conn = create_connection();
