@@ -59,7 +59,7 @@ if (!isset($_SESSION['email'])) {
                             <td><?= $category ?></td>
                             <td><?= $releaseyear ?></td>
                             <td>
-                                <form action="enrollment.php" method="post" class="d-inline">
+                                <form action="" method="post" class="d-inline">
                                     <input type="hidden" name="id_course" value="<?= $id_course ?>">
                                     <button type="submit" class="btn btn-primary">Visit</button>
                                 </form>
