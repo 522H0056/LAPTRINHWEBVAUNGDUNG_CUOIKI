@@ -1,33 +1,51 @@
 <?php
-require_once('db.php');
-session_start();
+// Start the session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
 
+// Include the database connection
+require_once('db.php');
+
+// Check if the user is logged in
 if (!isset($_SESSION['email'])) {
     header('Location: login.php');
     exit;
 }
 
+// Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $lesson_id = $_POST['lesson_id'];
-    $user_email = $_SESSION['email'];
+    // Get the lesson ID and email from the POST data
+    if(isset($_POST['lesson_id']) && isset($_POST['email'])){
+        $lesson_id = $_POST['lesson_id'];
+        $user_email = $_POST['email'];
+    } else {
+        echo "Error: Lesson ID or email not received!";
+        exit;
+    }
+    
+    // Escape variables to prevent SQL injection
+    $lesson_id = mysqli_real_escape_string($conn, $lesson_id);
+    $user_email = mysqli_real_escape_string($conn, $user_email);
 
-    $sql_check = "SELECT * FROM completed_lesson WHERE email = '$user_email' AND lesson_id = '$lesson_id'";
+    // Query to check if the lesson has already been marked as seen
+    $sql_check = "SELECT * FROM completed_lesson WHERE email = '$user_email' AND lesson_id = '$lesson_id' AND status = 'You have seen the video'";
     $result_check = mysqli_query($conn, $sql_check);
 
-    if (mysqli_num_rows($result_check) > 0) {
-        // Nếu đã có dữ liệu, hiển thị cảnh báo bằng mã JavaScript
-        echo "<script>alert('Bạn đã xem bài học này rồi.');</script>";
-    } else {
-        // Nếu chưa có dữ liệu, thực hiện thêm vào cơ sở dữ liệu
-        $sql_insert = "INSERT INTO completed_lesson (email, lesson_id, isComplete) VALUES ('$user_email', '$lesson_id', 1)";
+    if ($result_check && mysqli_num_rows($result_check) > 0) {
 
-        if (mysqli_query($conn, $sql_insert)) {
-            echo "Lesson ID: $lesson_id has been marked as completed for user with email: $user_email";
+    } else {
+        // If the lesson has not been marked as seen yet, insert a new record
+        $sql_update = "UPDATE completed_lesson SET status = 'You have seen the video' WHERE email = '$user_email' AND lesson_id = '$lesson_id'";
+        $result_update = mysqli_query($conn, $sql_update);
+
+        if ($result_update) {
+            // Success message
+            echo "Lesson marked as watched!";
         } else {
-            echo "Error: " . mysqli_error($conn);
+            // Error updating record
+            echo "Error updating lesson status: " . mysqli_error($conn);
         }
     }
-} else {
-    echo "Error: No data received!";
-}
+} 
 ?>

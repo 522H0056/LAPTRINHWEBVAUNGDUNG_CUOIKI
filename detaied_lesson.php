@@ -1,12 +1,14 @@
 <?php
-    require_once('db/lesson_db.php');
-    require_once('db/course_user.php');
-    require_once('db/load_coursename_to_detaied_course.php');
-    $id_course = $_GET['id_course'];
+    // Include necessary files
+    require_once('db/lesson_user.php');
+    require_once('db/seen_lesson.php');
+
+    // Start session if not already started
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
 
+    // Logout if requested
     if (isset($_GET['logout'])) {
         $_SESSION = array();
         session_destroy();
@@ -14,14 +16,43 @@
         exit;
     }
 
+    // Redirect to login page if user is not logged in
     if (!isset($_SESSION['email'])) {
-        header('Location:login.php');
+        header('Location: login.php');
         die();
     }
 
-    $lesson = get_lesson();
-    $course = get_title_of_course($id_course)
+    // Get lesson ID from URL parameter
+    $id_lesson = $_GET['id_lesson'];
+
+    // Get lesson information
+    $lesson = get_lesson_by_id($id_lesson);
+
+    // Function to get lesson information by ID
+    function get_lesson_by_id($id_lesson)
+    {
+        // Connect to the database
+        $conn = create_connection();
+
+        // Query to get lesson information with corresponding ID
+        $sql = "SELECT * FROM lesson WHERE lesson_id = $id_lesson";
+        $result = $conn->query($sql);
+
+        // Check and process the returned result
+        $data = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        // Close the connection
+        $conn->close();
+        
+        // Return the data
+        return $data;
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,171 +61,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <style>
-        #searchbar {
-            width: 80%;
-            margin: 20px auto;
-            display: block;
-            outline: none;
-        }
-        *{
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        header{
-          position: relative;
-          padding: 0 2rem;
-        }
-
-        .navbar{
-          width: 100%;
-          height: 110px;
-          max-width: 1200px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        li{
-          list-style: none;
-        }
-        a{
-          text-decoration: none;
-          color: white;
-          font-size: 1rem;
-        }
-        a:hover{
-          color: blue;
-          font-size: 120%;
-        }
-        i{
-          color: white;
-        }
-
-        .navbar .logo a{
-          font-size: 1.5rem;
-          font-weight: bold;
-        }
-
-        .navbar .links{
-          display: flex;
-          gap: 2rem;
-        }
-
-        .navbar .toggle_btn{
-          color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          display: none;
-        }
-
-        @media(max-width: 992px){
-          .navbar .links{
-            display: none;
-          }
-
-          .navbar .toggle_btn{
-            display: block;
-          }
-
-        }
-        .dropdown_menu{
-          position: absolute;
-          right: 2rem;
-          top: 60px;
-          height: 0;
-          width: 200px;
-          background-color: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(75px);
-          border-radius: 10px;
-          overflow: hidden;
-          transition: height .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .dropdown_menu li{
-          padding: 0.7rem;
-          display: flex;
-          align-items: center;
-          justify-self: center;
-        }
-
-        .dropdown_menu.open{
-          height: 200px;
-        }
-
-        body{
-          height: 100vh;
-          background-size: cover;
-          background-position: center;
-        }
-
-        @media(max-width: 170px){
-          .dropdown_menu{
-            left: 2rem;
-            width: unset;
-          }
-        }
-
-
-        footer {
-          background-color: #333;
-          color: #fff;
-          padding: 40px 0;
-        }
-
-        footer h4 {
-        margin-bottom: 20px;
-        }
-
-        footer p {
-            margin-bottom: 10px;
-        }
-
-        .social-icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .social-icons li {
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .social-icons li:last-child {
-            margin-right: 0;
-        }
-
-        .social-icons a {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        @media (max-width: 576px) {
-            footer .container {
-                text-align: center;
-            }
-        }
-        img {
-          width:300px;
-          height:300px;
-        }
-        #enroll_button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 0.25rem;
-            border: none;
-        }
-
-        #enroll_button:hover {
-            background-color: #0056b3;
-        }
+        /* CSS styles */
     </style>
 </head>
 <body class="bg-primary">
@@ -223,28 +92,14 @@
         </div>
     </div>
 </header>
-<?php
-    foreach ($course as $c) {
-        $title = $c['Title'];
-?>
-<div class="col mb-4 row-cols-1">
-    <div class="card">
-        <div class="card-body">
-            <h2 class="card-title"><?=$title?></h2>
-        </div>
-    </div>
-</div>
-<?php
-    }
-?>
 
 <div class="container mt-5 bg-white p-5">
-    <div class="row row-cols-1 row-cols-12">
     <?php foreach ($lesson as $l) { ?>
-    <!-- Phần mã HTML hiển thị thông tin bài học -->
+    <!-- HTML to display lesson information -->
     <form id="lesson_form_<?= $l['lesson_id'] ?>" action="db/seen_lesson.php" method="post">
     <input type="hidden" name="lesson_id" value="<?= $l['lesson_id'] ?>">
-    <div class="col mb-4 row-cols-1">
+    <input type="hidden" name="email" value="<?= $_SESSION['email'] ?>">
+    <div class="col-md-12 mb-">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><?= $l['Title'] ?></h5>
@@ -253,19 +108,16 @@
                     <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
                 </div>
                 <div class="form-check">
-                <button type="button" class="btn btn-primary" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>)">Seen</button>
-
+                    <button type="button" class="btn btn-primary" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>, '<?= $_SESSION['email'] ?>')">Mark as Seen</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
     <?php } ?>
-    </div>
-    <form action="feedback.php?id_course=<?= $l['id_course'] ?>" method="post">
-        <button id="submit_btn" class="btn btn-primary" onclick="completeCourse()">Complete the course</button>
-    </form>
 </div>
+
+
 
 <footer>
     <div class="container">
@@ -289,23 +141,37 @@
 </footer>
 
 <script>
-    function markLessonAsSeen(lessonId) {
-        // Gửi yêu cầu AJAX
+    function markLessonAsSeen(lessonId, userEmail) {
+        // Create a new XMLHttpRequest object
         var xhr = new XMLHttpRequest();
+        
+        // Specify the request method and URL
         xhr.open("POST", "db/seen_lesson.php", true);
+        
+        // Set the request header
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        
+        // Define the callback function to handle the response
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                // Xử lý kết quả nếu cần
+                // Log the response to the console (for debugging)
                 console.log(xhr.responseText);
+                
+                // Optionally, you can perform additional actions based on the response
+                // For example, you can display a notification to the user
+                
+                // Reload the page to reflect the updated status
+                location.reload();
             }
         };
-        xhr.send("lesson_id=" + lessonId);
+        
+        // Prepare the data to be sent in the request body
+        var formData = "lesson_id=" + lessonId + "&email=" + userEmail;
+        
+        // Send the request with the data
+        xhr.send(formData);
     }
 </script>
-
-
-
 
 </body>
 </html>

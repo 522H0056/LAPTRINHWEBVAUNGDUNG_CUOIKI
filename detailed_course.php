@@ -1,11 +1,14 @@
 <?php
-    require_once('db/lesson_db.php');
-    require_once('db/course_user.php');
-    require_once('db/load_coursename_to_detaied_course.php');
-    $id_course = $_GET['id_course'];
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+    require_once('db/lesson_db.php');
+    require_once('db/course_user.php');
+    require_once('db/load_coursename_to_detaied_course.php');
+    require_once('db/status_lesson_of_user.php');
+    require_once('db/complete_course_db.php');
+    $id_course = $_GET['id_course'];
+    $userEmail = $_SESSION['email'];
 
     if (isset($_GET['logout'])) {
         $_SESSION = array();
@@ -20,7 +23,8 @@
     }
 
     $lesson = get_lesson();
-    $course = get_title_of_course($id_course)
+    $course = get_title_of_course($id_course);
+    $status = get_completed_lessons();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -223,49 +227,60 @@
         </div>
     </div>
 </header>
-<?php
-    foreach ($course as $c) {
-        $title = $c['Title'];
-?>
-<div class="col mb-4 row-cols-1">
-    <div class="card">
-        <div class="card-body">
-            <h2 class="card-title"><?=$title?></h2>
-        </div>
-    </div>
-</div>
-<?php
-    }
-?>
-
-<div class="container mt-5 bg-white p-5">
-    <div class="row row-cols-1 row-cols-12">
-    <?php foreach ($lesson as $l) { ?>
-    <!-- Phần mã HTML hiển thị thông tin bài học -->
-    <form id="lesson_form_<?= $l['lesson_id'] ?>" action="db/seen_lesson.php" method="post">
-    <input type="hidden" name="lesson_id" value="<?= $l['lesson_id'] ?>">
+<?php foreach ($course as $c) { ?>
     <div class="col mb-4 row-cols-1">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><?= $l['Title'] ?></h5>
-                <p class="card-text"><?= $l['Description'] ?></p>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
-                </div>
-                <div class="form-check">
-                <button type="button" class="btn btn-primary" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>)">Seen</button>
-
-                </div>
+                <h2 class="card-title"><?= $c['Title'] ?></h2>
             </div>
         </div>
     </div>
-</form>
-    <?php } ?>
+<?php } ?>
+
+<div class="container mt-5 bg-white p-5">
+    <div class="row row-cols-1 row-cols-12">
+        <?php foreach ($lesson as $l) { ?>
+            <!-- Phần mã HTML hiển thị thông tin bài học -->
+            <form id="lesson_form_<?= $l['lesson_id'] ?>" action="db/seen_lesson.php" method="post">
+                <input type="hidden" name="lesson_id" value="<?= $l['lesson_id'] ?>">
+                <div class="col mb-4 row-cols-1">
+                    <div class="card">
+                        <div class="card-body ">
+                            <h5 class="card-title"><?= $l['Title'] ?></h5>
+                            <p class="card-text"><?= $l['Description'] ?></p>
+                            <a href="detaied_lesson.php?id_lesson=<?= $l['lesson_id'] ?>" class="" style="display: inline-block; padding: .375rem .75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; text-align: center; white-space: nowrap; margin-bottom: 10px; vertical-align: middle; cursor: pointer; background-color: #007bff; border: 1px solid transparent; border-radius: .25rem; color: #fff; text-decoration: none;">View lesson</a>
+
+                            <?php
+                            $found = false; // Biến để kiểm tra xem có trạng thái nào tương ứng với lesson_id hiện tại không
+                            foreach ($status as $s) {
+                              if ($s['lesson_id'] === $l['lesson_id']) {
+                                  echo '<div class="alert alert-primary" role="alert">';
+                                  echo $s['status'];
+                                  echo '</div>';
+                                   // Thêm một dòng trống sau mỗi phần tử
+                                  $found = true;
+                                  break; // Kết thúc vòng lặp nếu đã tìm thấy trạng thái
+                              }
+                          }
+                          
+                            if (!$found) {
+                                echo "<p>No status found.</p>"; // Thông báo nếu không tìm thấy trạng thái
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        <?php } ?>
     </div>
-    <form action="feedback.php?id_course=<?= $l['id_course'] ?>" method="post">
-        <button id="submit_btn" class="btn btn-primary" onclick="completeCourse()">Complete the course</button>
-    </form>
+    <form id="complete_course_form">
+    <button id="complete_course_btn" class="btn btn-success" type="button" onclick="completeCourse()">Complete the course</button>
+</form>
+
+
 </div>
+
+
 
 <footer>
     <div class="container">
@@ -288,24 +303,32 @@
     </div>
 </footer>
 
+</body>
 <script>
-    function markLessonAsSeen(lessonId) {
-        // Gửi yêu cầu AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "db/seen_lesson.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // Xử lý kết quả nếu cần
-                console.log(xhr.responseText);
-            }
-        };
-        xhr.send("lesson_id=" + lessonId);
-    }
+function completeCourse() {
+    fetch('db/complete_course_db.php?id_course=<?= $id_course ?>')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Đọc nội dung của phản hồi dưới dạng JSON
+    })
+    .then(data => {
+        console.log(data); // Log dữ liệu nhận được từ phản hồi
+        // Sử dụng giá trị chuỗi trả về từ phản hồi
+        if (data === 'true') {
+            alert('Congratulations! You have completed the course.');
+        } else {
+            alert('Sorry, you have not completed all lessons in the course yet.');
+        }
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+}
 </script>
 
 
 
 
-</body>
 </html>

@@ -1,7 +1,9 @@
 <?php
 include('db.php');
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['email'])) {
     // Nếu chưa đăng nhập, chuyển hướng người dùng đến trang đăng nhập
