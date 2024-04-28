@@ -106,9 +106,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            
-                        </div>
+
                     </div>
                 </div>
             </div>

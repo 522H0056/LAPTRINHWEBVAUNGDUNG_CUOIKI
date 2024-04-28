@@ -1,37 +1,55 @@
 <?php
-  require_once('db/course_db.php');
-  require_once('db/name_in_header_db.php');
-  
-  if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-  }
-  $id_course = $_GET['id_course'];
+    require_once('db/course_db.php');
+    require_once('db/name_in_header_db.php');
+    require_once('db/feedback_db.php'); // Thêm file xử lý feedback vào
 
-  if (isset($_GET['logout'])) {
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-  }
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    $id_course = $_GET['id_course'];
 
-  if (!isset($_SESSION['email'])) {
-    header('Location:login.php');
-    die();
-  }
+    if (isset($_GET['logout'])) {
+        $_SESSION = array();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
 
-  function get_title_and_img_for_feedback($id_course)
-  {
-    $conn = create_connection();
-    $sql = "SELECT * FROM courses WHERE course_id = '$id_course'"; 
-    $result = $conn->query($sql);
-    $data = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+    if (!isset($_SESSION['email'])) {
+        header('Location:login.php');
+        die();
+    }
+
+    function get_title_and_img_for_feedback($id_course)
+    {
+        $conn = create_connection();
+        $sql = "SELECT * FROM courses WHERE course_id = '$id_course'"; 
+        $result = $conn->query($sql);
+        $data = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
+    // Xử lý khi người dùng gửi feedback
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['rating']) && isset($_POST['comment'])) {
+            // Lấy dữ liệu từ biểu mẫu
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'];
+            $email = $_SESSION['email'];
+
+            // Thêm dữ liệu vào cơ sở dữ liệu
+            add_feedback($email, $id_course, $rating, $comment);
+
+            // Chuyển hướng người dùng sau khi gửi feedback
+            header("Location: feedback_success.php");
+            exit;
         }
     }
-    return $data;
-  }
 ?>
 
 <!DOCTYPE html>
@@ -82,46 +100,46 @@
                 </p>
             </div>
             <hr />
-            <form class="px-4" action="">
+            <form class="px-4" method="post" action="">
                 <p class="text-center"><strong>Your rating:</strong></p>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="exampleForm" id="radio3Example1" />
-                    <label class="form-check-label" for="radio3Example1">
+                    <input class="form-check-input" type="radio" name="rating" id="verygood" value="Very good" />
+                    <label class="form-check-label" for="verygood">
                         Very good
                     </label>
                 </div>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="exampleForm" id="radio3Example2" />
-                    <label class="form-check-label" for="radio3Example2">
+                    <input class="form-check-input" type="radio" name="rating" id="good" value="Good" />
+                    <label class="form-check-label" for="good">
                         Good
                     </label>
                 </div>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="exampleForm" id="radio3Example3" />
-                    <label class="form-check-label" for="radio3Example3">
+                    <input class="form-check-input" type="radio" name="rating" id="medicore" value="Medicore" />
+                    <label class="form-check-label" for="medicore">
                         Medicore
                     </label>
                 </div>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="exampleForm" id="radio3Example4" />
-                    <label class="form-check-label" for="radio3Example4">
+                    <input class="form-check-input" type="radio" name="rating" id="bad" value="Bad" />
+                    <label class="form-check-label" for="bad">
                         Bad
                     </label>
                 </div>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="exampleForm" id="radio3Example5" />
-                    <label class="form-check-label" for="radio3Example5">
+                    <input class="form-check-input" type="radio" name="rating" id="verybad" value="Very bad" />
+                    <label class="form-check-label" for="verybad">
                         Very bad
                     </label>
                 </div>
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+                    <textarea class="form-control" id="form4Example3" name="comment" rows="4"></textarea>
                     <label class="form-label" for="form4Example3">Your feedback</label>
                 </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
             </form>
-        </div>
-        <div class="card-footer text-end">
-            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Submit</button>
         </div>
     </div>
 </div>

@@ -108,7 +108,7 @@
                     <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
                 </div>
                 <div class="form-check">
-                    <button type="button" class="btn btn-primary" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>, '<?= $_SESSION['email'] ?>')">Mark as Seen</button>
+                    <button type="button" class="btn btn-success" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>, '<?= $_SESSION['email'] ?>')">Mark as Seen</button>
                 </div>
             </div>
         </div>

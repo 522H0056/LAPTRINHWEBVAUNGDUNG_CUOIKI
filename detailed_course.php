@@ -273,8 +273,13 @@
             </form>
         <?php } ?>
     </div>
-    <form id="complete_course_form">
-    <button id="complete_course_btn" class="btn btn-success" type="button" onclick="completeCourse()">Complete the course</button>
+    <button id="complete_course_btn" class="btn btn-success" style="display: inline-block; padding: 0.5rem 1rem; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 0.25rem; border: none; cursor: pointer;" disabled>Complete the course</button>
+
+
+    <div class="alert alert-warning" role="alert">
+        Watch all the lesson in order to enable this button
+    </div>
+
 </form>
 
 
@@ -305,28 +310,30 @@
 
 </body>
 <script>
-function completeCourse() {
-    fetch('db/complete_course_db.php?id_course=<?= $id_course ?>')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); // Đọc nội dung của phản hồi dưới dạng JSON
-    })
-    .then(data => {
-        console.log(data); // Log dữ liệu nhận được từ phản hồi
-        // Sử dụng giá trị chuỗi trả về từ phản hồi
-        if (data === 'true') {
-            alert('Congratulations! You have completed the course.');
-        } else {
-            alert('Sorry, you have not completed all lessons in the course yet.');
-        }
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
-}
+    function checkCourseCompletion() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                var completeBtn = document.getElementById('complete_course_btn');
+                if (response === true) {
+                    completeBtn.removeAttribute('disabled');
+                } else {
+                    completeBtn.setAttribute('disabled', 'disabled');
+                }
+            }
+        };
+        xhttp.open("GET", "db/complete_course.php?id_course=<?= $id_course ?>", true);
+        xhttp.send();
+    }
+
+    // Gọi hàm checkCourseCompletion khi trang được tải
+    window.onload = function() {
+        checkCourseCompletion();
+    };
 </script>
+
+
 
 
 
