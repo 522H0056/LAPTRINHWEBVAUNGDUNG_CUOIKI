@@ -27,12 +27,25 @@
     $status = get_completed_lessons();
    
     $complete_result = isComplete($id_course, $userEmail);
+    $button_ressult =  isButtonWork ($id_course, $userEmail);
     if ($complete_result === false) {
         $error = 'Please view all the lessons in this course';
     }
 
+
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['complete_course'])) {
-        if ($complete_result) {
+        if ($button_ressult === 'have_feedbacked') {
+                echo '<script>';
+            echo 'alert("You have completed this course");';
+            echo '</script>';
+
+            // Chuyển hướng người dùng đến trang chính sau khi gửi phản hồi thành công
+            echo '<script>';
+            echo "window.location.href = 'detailed_course.php?id_course=$id_course';";
+
+            echo '</script>';
+        }
+        else if ($complete_result) {
             header("Location: feedback.php?id_course=$id_course");
 
             exit(); 

@@ -6,6 +6,14 @@
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+
+    // Kiểm tra xem có tham số id_course được truyền vào không
+    if (!isset($_GET['id_course'])) {
+        header("Location: home.php");
+        exit;
+    }
+
+    // Lấy id_course từ URL
     $id_course = $_GET['id_course'];
 
     if (isset($_GET['logout'])) {
@@ -16,14 +24,15 @@
     }
 
     if (!isset($_SESSION['email'])) {
-        header('Location:login.php');
+        header('Location: login.php');
         die();
     }
 
+    // Hàm lấy thông tin về tiêu đề và hình ảnh của khóa học
     function get_title_and_img_for_feedback($id_course)
     {
         $conn = create_connection();
-        $sql = "SELECT * FROM courses WHERE course_id = '$id_course'"; 
+        $sql = "SELECT * FROM courses WHERE course_id = '$id_course'";
         $result = $conn->query($sql);
         $data = array();
         if ($result->num_rows > 0) {
@@ -32,23 +41,6 @@
             }
         }
         return $data;
-    }
-
-    // Xử lý khi người dùng gửi feedback
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['rating']) && isset($_POST['comment'])) {
-            // Lấy dữ liệu từ biểu mẫu
-            $rating = $_POST['rating'];
-            $comment = $_POST['comment'];
-            $email = $_SESSION['email'];
-
-            // Thêm dữ liệu vào cơ sở dữ liệu
-            add_feedback($email, $id_course, $rating, $comment);
-
-            // Chuyển hướng người dùng sau khi gửi feedback
-            header("Location: feedback_success.php");
-            exit;
-        }
     }
 ?>
 
@@ -137,7 +129,7 @@
                     <label class="form-label" for="form4Example3">Your feedback</label>
                 </div>
                 <div class="card-footer text-end">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success" name="submit-btn" >Submit</button>
                 </div>
             </form>
         </div>

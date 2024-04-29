@@ -65,7 +65,8 @@ body {
 
 </style>
 </head>
-<body>
+<body class="bg-primary"
+>
 
 <header class="hd"  class="faq-header">
     <div class="container">

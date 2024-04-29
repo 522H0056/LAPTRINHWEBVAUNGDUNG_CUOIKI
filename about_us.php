@@ -102,7 +102,10 @@ body {
   }
 </style>
 </head>
-<body>
+<body class="bg-primary">
+<?php
+      $name_of_user = get_name_in_header();
+    ?>
 <header class=" border-bottom " id="header">
       <div class="navbar">
         <div class="logo"><a href="#">Free Courses</a></div>

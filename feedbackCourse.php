@@ -1,6 +1,7 @@
 <?php
   require_once('db/course_db.php');
   require_once('db/name_in_header_db.php');
+  require_once('db/feedbackCourse_db.php');
   
   if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -37,8 +38,10 @@
 <body class="bg-primary">
     
     <?php
-      $courses = get_courses();
+      $courses = get_match_course();
       $name_of_user = get_name_in_header();
+      $feedbacks = get_feedbacks();
+
     ?>
 
 
@@ -77,50 +80,44 @@
 </div>
 
     </header>
+    <div class="container mt-5 d-flex justify-content-center p-3">
+    <div class="row">
+        <div class="col-md-12 "> <!-- Thêm lớp này -->
+            <?php foreach ($courses as $c) {
+                $title = $c['Title'];
+                $description = $c['Description'];
+                $id_course = $c['course_id'];
+                $category = $c['Type'];
+                $releaseyear = $c['ReleaseYear'];
+                $image = $c['images'];
+            ?>
+            <div class="bg-white m-2 p-2">
+                <h2 class="m-3">Feedback of <?= $title ?> from users</h2>
+                <img src="<?= $image ?>" class="card-img-top" alt="Course Image">
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <?php
+                    foreach ($name_of_user as $s) {
+                        $first = $s['FirstName'];
+                        $last = $s['LastName'];
+                        echo '<p><b>' . $first . ' ' . $last . '</b></p>';
+                    }
+                    foreach ($feedbacks as $f) {
+                        echo '<p class="card-text">Rating: ' . $f['rating'] . '</p>';
+                        echo '<p class="card-text">Comment: ' . $f['comment'] . '</p>';
+                    }
+                    ?>
+                </div>
+            </div>
+            <?php } ?> <!-- Kết thúc vòng lặp foreach -->
+        </div> <!-- Kết thúc cột -->
+    </div> <!-- Kết thúc dòng -->
+</div> <!-- Kết thúc container -->
 
-    <!-- Search bar -->
-    <div class="searchbar-container">
-    <!-- Search bar -->
-      <input type="text" name="" id="searchbar" placeholder="Search courses here" style="border: none; padding: 5px;">
-    </div>
+       
 
-    <div class="container mt-5 bg-white p-5">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-            
 
-              <?php
-                 foreach ($courses as $c)
-                 {
-                  $title = $c['Title'];
-                  $description = $c['Description'];
-                  $id_course = $c['course_id'];
-                  $category = $c['Type'];
-                  $releaseyear = $c ['ReleaseYear'];
-                  $image = $c['images'];
-                  ?>
-                    <div class="col mb-4">
-                        <div class="card">
-                            <img src=<?=$image?> class="card-img-top" alt="Course Image">
-                            <div class="card-body">
-                                <h5 class="card-title"><?=$title?></h5>
-                                <p class="card-text"><?=$description?></p>
-                                <p class="card-text">Id course:<?=$id_course?> </p>
-                                <p class="card-text">Category: <?=$category?>  </p>
-                                <p class="card-text">Release: <?=$releaseyear?>  </p>
-                                <form action="enrollment.php" method="post">
-                                    <input type="hidden" name="id_course" value="<?= $id_course ?>">
-                                    <button type="submit" class="btn btn-primary">Enroll</button>
-                                    
-                                </form>
-                                <a class="card-text" href="feedbackCourse.php?id_course=<?php echo $id_course; ?>" style="color: blue; text-decoration: underline;">See feedback</a>
-                            </div>
-                        </div>
-                    </div>
-                  <?php
-                 }
-              ?>
-        </div>
-    </div>
     
     <footer>
     <div class="container">
@@ -153,7 +150,6 @@
             window.location.href = "detailed_course.php?id_course=" + courseId; // Redirect to detailed_course.php with the course ID
         });
     });
-
     const courseCards = document.querySelectorAll('.card');
 
     // Gắn sự kiện 'input' vào search bar

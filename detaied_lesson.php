@@ -63,7 +63,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <style>
-        /* CSS styles */
+        .container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
+        .responsive-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        }
     </style>
 </head>
 <body class="bg-primary">
@@ -93,19 +109,18 @@
     </div>
 </header>
 
-<div class="container mt-5 bg-white p-5">
     <?php foreach ($lesson as $l) { ?>
     <!-- HTML to display lesson information -->
     <form id="lesson_form_<?= $l['lesson_id'] ?>" action="db/seen_lesson.php" method="post">
     <input type="hidden" name="lesson_id" value="<?= $l['lesson_id'] ?>">
     <input type="hidden" name="email" value="<?= $_SESSION['email'] ?>">
-    <div class="col-md-12 mb-">
+    <div class="col-md-12 mb-4 mt-5">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><?= $l['Title'] ?></h5>
                 <p class="card-text"><?= $l['Description'] ?></p>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="<?= $l['video'] ?>" allowfullscreen></iframe>
+                <div class="container"> 
+                    <iframe  class="responsive-iframe mb-2" src="<?= $l['video'] ?>" ></iframe>
                 </div>
                 <div class="form-check">
                     <button type="button" class="btn btn-success" onclick="markLessonAsSeen(<?= $l['lesson_id'] ?>, '<?= $_SESSION['email'] ?>')">Mark as Seen</button>
@@ -113,11 +128,8 @@
             </div>
         </div>
     </div>
-</form>
+</form> 
     <?php } ?>
-</div>
-
-
 
 <footer>
     <div class="container">
@@ -137,7 +149,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div>  
 </footer>
 
 <script>

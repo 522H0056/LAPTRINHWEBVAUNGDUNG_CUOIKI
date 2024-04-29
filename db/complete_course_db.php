@@ -35,9 +35,26 @@ function isComplete ($id_course, $userEmail) {
         }
     } else {
         // Trả về false nếu không có bản ghi nào
-        echo false;
+        return false;
     }
     return $allCompleted;
 }
 
+function isButtonWork ($id_course, $userEmail) {
+    $conn = create_connection();
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['complete_course'])) {
+        $email = $_SESSION['email'];
+        $course_id = $_GET['id_course'];
+
+        // Kiểm tra xem đã tồn tại dòng trong bảng feedbacks với email và course_id tương ứng hay không
+        $check_query = "SELECT * FROM feedbacks WHERE email = '$email' AND course_id = '$course_id'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            return 'have_feedbacked';
+        } else {
+            return true;
+        }       
+    }
+}
 ?>
