@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <hr class="border-primary-subtle mb-4">
                         <h2 class="h1 mb-4">"FreeCourse Administration"</h2>
                         <p class="lead mb-5">For Admin only.</p>
+                        <a href="login.php" class="h1 mb-4" style="display: inline-block; padding: 10px; background-color: #cccccc; border: 1px solid #999999; color: #666666; text-decoration: none;">User login here</a>
                     </div>
                 </div>
             </div>

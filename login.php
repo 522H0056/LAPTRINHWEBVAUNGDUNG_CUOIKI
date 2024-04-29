@@ -44,10 +44,12 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                     <div class="col-12 col-xl-9">
                         <hr class="border-primary-subtle mb-4">
                         <h2 class="h1 mb-4">"Where Curiosity Meets Opportunity: Login to Explore, Discover, and Grow"</h2>
+                        
                         <p class="lead mb-5">Your Educational Journey Begins Here.</p>
                         <div class="text-endx">
                             Let's join our courses
                         </div>
+                        <a href="loginAdmin.php" class="h1 mb-4" style="display: inline-block; padding: 10px; background-color: #cccccc; border: 1px solid #999999; color: #666666; text-decoration: none;">Admin login here</a>
                     </div>
                 </div>
             </div>
@@ -83,14 +85,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                                         <?php echo $error; ?>
                                     </div>
                                     <?php endif; ?>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
-                                        <label class="form-check-label text-secondary" for="remember_me">
-                                        Keep me logged in
-                                        </label>
-                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">

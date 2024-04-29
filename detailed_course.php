@@ -9,7 +9,7 @@
     require_once('db/complete_course_db.php');
     $id_course = $_GET['id_course'];
     $userEmail = $_SESSION['email'];
-
+    $error = "";
     if (isset($_GET['logout'])) {
         $_SESSION = array();
         session_destroy();
@@ -25,7 +25,23 @@
     $lesson = get_lesson();
     $course = get_title_of_course($id_course);
     $status = get_completed_lessons();
+   
+    $complete_result = isComplete($id_course, $userEmail);
+    if ($complete_result === false) {
+        $error = 'Please view all the lessons in this course';
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['complete_course'])) {
+        if ($complete_result) {
+            header("Location: feedback.php?id_course=$id_course");
+
+            exit(); 
+        } else {
+            $error = 'Please view all the lessons in this course to make this button works.';
+        }
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -273,12 +289,28 @@
             </form>
         <?php } ?>
     </div>
-    <button id="complete_course_btn" class="btn btn-success" style="display: inline-block; padding: 0.5rem 1rem; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 0.25rem; border: none; cursor: pointer;" disabled>Complete the course</button>
-
-
-    <div class="alert alert-warning" role="alert">
-        Watch all the lesson in order to enable this button
+    <form method="post" action="">
+    <div class="row gy-3 overflow-hidden">
+        <div class="col-12">
+            <div class="d-grid">
+                <button class="btn btn-success btn-lg" type="submit" name="complete_course">Complete the course</button>
+            </div>
+        </div>
     </div>
+</form>
+
+
+    <div class="alert alert-warning   mt-3" role="alert">
+        Watch all the lesson before clicking this button
+    </div>
+    <div class="col-12 mt-3">
+                                    <!-- Hiển thị thông báo lỗi -->
+                                    <?php if ($error !== ''): ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $error; ?>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
 
 </form>
 
@@ -309,29 +341,6 @@
 </footer>
 
 </body>
-<script>
-    function checkCourseCompletion() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
-                var completeBtn = document.getElementById('complete_course_btn');
-                if (response === true) {
-                    completeBtn.removeAttribute('disabled');
-                } else {
-                    completeBtn.setAttribute('disabled', 'disabled');
-                }
-            }
-        };
-        xhttp.open("GET", "db/complete_course.php?id_course=<?= $id_course ?>", true);
-        xhttp.send();
-    }
-
-    // Gọi hàm checkCourseCompletion khi trang được tải
-    window.onload = function() {
-        checkCourseCompletion();
-    };
-</script>
 
 
 

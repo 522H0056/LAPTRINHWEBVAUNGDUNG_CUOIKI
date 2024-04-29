@@ -159,6 +159,7 @@
                 
                 // Optionally, you can perform additional actions based on the response
                 // For example, you can display a notification to the user
+                alert("Data saved");
                 
                 // Reload the page to reflect the updated status
                 location.reload();
@@ -172,6 +173,7 @@
         xhr.send(formData);
     }
 </script>
+
 
 </body>
 </html>
