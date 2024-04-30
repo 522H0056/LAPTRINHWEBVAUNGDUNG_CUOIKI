@@ -52,6 +52,7 @@
     <title>Feedback Form</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <style>
         body, html {
             height: 100%;
@@ -68,7 +69,7 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-primary">
     <?php
       $courses = get_title_and_img_for_feedback($id_course);
       $name_of_user = get_name_in_header();
@@ -130,6 +131,10 @@
                 </div>
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-success" name="submit-btn" >Submit</button>
+                </div>
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <textarea class="form-control" id="form4Example3" name="comment" rows="4"></textarea>
+                    <label class="form-label" for="form4Example3">You can send nothing</label>
                 </div>
             </form>
         </div>

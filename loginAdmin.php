@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login_result = login($email, $password);
 
     if ($login_result === false) {
-        $error = 'Incorrect email or password';
+        $error = 'Incorrect email or password/ You are not Admin';
     } else {
         $_SESSION['emailAdmin'] = $email;
         header('Location: administration.php');

@@ -18,6 +18,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $error = 'Incorrect email or password';
     } elseif ($login_result === 'not_activated') {
         $error = 'The account is not activated';
+    } elseif ($login_result === 'not_user') {
+        $error = 'Please use admin page to login';  
     } else {
         $_SESSION['email'] = $email;
         header('Location: home.php');

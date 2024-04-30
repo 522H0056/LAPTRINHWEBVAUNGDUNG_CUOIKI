@@ -29,6 +29,117 @@
 <link rel="stylesheet" href="style.css">
 <style>
 /* General styles */
+header {
+    margin-top: 0px;
+    position: relative;
+  }
+
+  footer {
+    background-color: rgba(255, 255, 255,0.5);
+    margin-bottom: 0px;
+    width: 100%;
+    color: rgb(61, 60, 60);
+    padding-top: 10px;
+  }
+
+  nav {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+  }
+ 
+  .listHeader {
+    display: inline;
+    margin: 0 30px;
+    font-size: 25px;
+    color: white; 
+  }
+  .tableFooter {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .listFooter {
+    list-style: none;
+    margin: 20px;
+    display: center;
+  }
+  .listFooter img {
+    margin-right: 10px;
+  }
+
+  #logo1,#logo2 {
+    font-size: 25px;
+    margin: 0 5px;
+  }
+
+  body {
+    background-image: url('/images/headerbg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  a {
+    text-decoration: none;
+    color: rgb(252, 249, 249);
+    transition: all 0.9s ease;
+  }
+
+  a:hover {
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+  }
+
+
+  h3 {
+    margin-bottom: 20px;
+  }
+
+  
+#navmoblie,.frameMoblie{
+    display: none;
+  }
+#navmoblie:hover {
+  cursor: pointer;
+}
+  .frameMoblie ul {
+    list-style: none;
+  }
+  #navmoblie {
+  width: 32px; /* Đặt kích thước của hình ảnh là 32px */
+  height: 32px; /* Đặt kích thước của hình ảnh là 32px */
+}
+
+  .frameMoblie {
+    margin-top: 20px;
+  }
+@media (max-width: 800px) {
+
+    a:hover {
+      font-size: inherit; /* Override font size change on hover */
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+    }
+    .mainsection {
+      width: 90%;
+    }
+    #picMain {
+      width: 80%;
+    }
+    
+    .frame {
+      display: none;
+    }
+    #navmoblie {
+      display: block;
+    }
+  }
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -86,66 +197,58 @@ body {
     height: auto;
   }
   
-  .button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 16px;
-  }
   
-  .button:hover {
-    background-color: #45a049;
-  }
 </style>
 </head>
 <body class="bg-primary">
 <?php
       $name_of_user = get_name_in_header();
     ?>
-<header class=" border-bottom " id="header">
-      <div class="navbar">
-        <div class="logo"><a href="#">Free Courses</a></div>
-        <ul class="links">
-          <li><a href="home.php">Home</a></li>
-          <li><a href="about_us.php">About</a></li>
-          <li><a href="mycourse.php">My course</a></li>
-          <li><a href="faq.php">FAQ</a></li>
-        </ul>
-        <?php
-          foreach ($name_of_user as $s) {
-              $first = $s['FirstName'];
-              $last = $s['LastName'];
-              echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
-          }
-          ?>
-
-        
-        <a href="?logout"><b>Log out</b></a>
-        <div class="toggle_btn">
-          <i class="fa-solid fa-bars"></i>
+<header>
+      <nav>
+        <div class="frame">
+          <ul>
+            <li class="listHeader" ><b></b>FreeCourse</li>
+            <li class="listHeader"><a id="index" href="home.php"><b>Home</b></a></li>
+            <li class="listHeader"><a id="about" href="mycourse.php"> <b>My Course</b></a></li>
+            <li class="listHeader"><a id="about" href="about_us.php"><b>About</b></a></li>
+            <li class="listHeader"><a id="about" href="faq.php"><b>FAQ</b></a></li>
+          </ul>
+          <script>
+            document.getElementById("index").addEventListener("click", function(event){
+                var confirmation = confirm("Are you sure you want to leave this page?"); 
+                if (!confirmation) {
+                    event.preventDefault(); 
+                }
+            });
+            function toggleContent() {
+                const content = document.querySelector(".frameMoblie");
+                content.style.display = content.style.display === "block" ? "none" : "block";
+}
+            </script>
         </div>
-
-        <div class="dropdown_menu">
-  <ul> <!-- Start unordered list -->
-    <li><a href="home.php">Home</a></li>
-    <li><a href="about_us.php">About</a></li>
-    <li><a href="hero">My course</a></li>
-    <li><a href="faq.php">FAQ</a></li>
-  </ul> <!-- End unordered list -->
-</div>
-
-    </header>
-  <header class="hd">
-    <div >
-      <h1>About Our Free Course</h1>
-      <p>Welcome to our free course page! Here, we offer valuable learning resources to help you enhance your skills and knowledge in various subjects.</p>
-      <p>Our mission is to provide accessible education to everyone, regardless of their background or financial status.</p>
-    </div>
-  </header>
+        <img id="navmoblie" src="img/nav.png" onclick="toggleContent()" alt="">
+        <div class="frameMoblie">
+          <ul>
+            <li><?php
+            foreach ($name_of_user as $s) {
+                $first = $s['FirstName'];
+                $last = $s['LastName'];
+                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+            }
+          ?></li>
+            <li><p style="color: white">______________</p></li>
+            
+            <li style="margin-bottom: 10px;"><a href="home.php" ><b>Home</b></a></li>
+            <li style="margin-bottom: 10px;"><a href="mycourse.php" ><b>My Course</b></a></li>
+            <li style="margin-bottom: 10px;"><a href="about_us.php" ><b>About</b></a></li>
+            <li style="margin-bottom: 10px;"><a href="faq.html" ><b>FAQ</b></a></li>
+            <li><p style="color: white">______________</p></li>
+            <li style="margin: 10px;"><a href="?logout"><b>Log out</b></a></li>
+          </ul>
+        </div>
+      </nav>
+</header>
 
   <h2 style="text-align:center">Meet Our Team</h2>
   <div class="row">

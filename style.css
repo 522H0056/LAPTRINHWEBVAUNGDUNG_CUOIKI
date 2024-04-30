@@ -60,16 +60,17 @@ i{
   display: none;
 }
 
-@media(max-width: 992px){
-  .navbar .links{
+/* @media(max-width: 992px){
+  .navbar,.userHeader,.logoutHeader {
     display: none;
-  }
+  } */
+  
 
   .navbar .toggle_btn{
     display: block;
   }
 
-}
+
 .dropdown_menu{
   position: absolute;
   right: 2rem;
@@ -100,12 +101,12 @@ body{
   background-position: center;
 }
 
-@media(max-width: 170px){
+/* @media(max-width: 170px){
   .dropdown_menu{
     left: 2rem;
     width: unset;
   }
-}
+} */
 
 
 footer {
@@ -170,3 +171,8 @@ img {
 #enroll_button:hover {
     background-color: #0056b3; /* Màu hover của Bootstrap */
 }
+.navbar a:hover {
+  font-size: 110%; /* Kích thước chữ to lên 110% khi hover */
+  color: inherit; /* Giữ màu chữ nguyên khi hover */
+}
+

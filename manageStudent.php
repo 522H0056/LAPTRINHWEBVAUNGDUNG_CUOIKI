@@ -22,6 +22,7 @@
     <title>Document</title>
     <!-- Chèn CSS của Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <!-- Chèn các tệp JavaScript cần thiết -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -34,8 +35,9 @@
         <thead>
             <tr>
                 <th>Email</th>
-                <th>First Name Title</th>
+                <th>First Name </th>
                 <th>Last Name</th>
+                <th>isActive</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -46,11 +48,16 @@
                 $email = $s['email'];
                 $first = $s['FirstName'];
                 $last = $s['LastName'];
+                $isActive = $s['isActive'];
+
                 ?>
                 <tr>
                     <td><?= $email ?></td>
                     <td><?= $first ?></td>
                     <td><?= $last ?></td>
+                    <td><?= $isActive ?></td>
+                    
+                    
                     <td>
                         <form action="enrollment.php" method="post" class="d-inline">
                             <input type="hidden" name="id_course" value="<?= $id_course ?>">

@@ -26,54 +26,183 @@ if (!isset($_SESSION['email'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <style>
+  header {
+    margin-top: 0px;
+    position: relative;
+  }
+
+  footer {
+    background-color: rgba(255, 255, 255,0.5);
+    margin-bottom: 0px;
+    width: 100%;
+    color: rgb(61, 60, 60);
+    padding-top: 10px;
+  }
+
+  nav {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+  }
+ 
+  .listHeader {
+    display: inline;
+    margin: 0 30px;
+    font-size: 25px;
+    color: white; 
+  }
+  .tableFooter {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .listFooter {
+    list-style: none;
+    margin: 20px;
+    display: center;
+  }
+  .listFooter img {
+    margin-right: 10px;
+  }
+
+  #logo1,#logo2 {
+    font-size: 25px;
+    margin: 0 5px;
+  }
+
+  body {
+    background-image: url('/images/headerbg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  a {
+    text-decoration: none;
+    color: rgb(252, 249, 249);
+    transition: all 0.9s ease;
+  }
+
+  a:hover {
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+  }
+
+
+  h3 {
+    margin-bottom: 20px;
+  }
+
+  
+#navmoblie,.frameMoblie{
+    display: none;
+  }
+#navmoblie:hover {
+  cursor: pointer;
+}
+  .frameMoblie ul {
+    list-style: none;
+  }
+  #navmoblie {
+  width: 32px; /* Đặt kích thước của hình ảnh là 32px */
+  height: 32px; /* Đặt kích thước của hình ảnh là 32px */
+}
+
+  .frameMoblie {
+    margin-top: 20px;
+  }
+@media (max-width: 800px) {
+
+    a:hover {
+      font-size: inherit; /* Override font size change on hover */
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+    }
+    .mainsection {
+      width: 90%;
+    }
+    #picMain {
+      width: 80%;
+    }
+    
+    .frame {
+      display: none;
+    }
+    #navmoblie {
+      display: block;
+    }
+  }
+</style>
     <title>My Courses</title>
 </head>
-<header class=" border-bottom " id="header">
-        <?php
-            $name_of_user = get_name_in_header();
-            ?>
-      <div class="navbar">
-        <div class="logo"><a href="#">Free Courses</a></div>
-        <ul class="links">
-          <li><a href="home.php">Home</a></li>
-          <li><a href="about_us.php">About</a></li>
-          <li><a href="mycourse.php">My course</a></li>
-          <li><a href="faq.php">FAQ</a></li>
-        </ul>
-        <?php
-          foreach ($name_of_user as $s) {
-              $first = $s['FirstName'];
-              $last = $s['LastName'];
-              echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
-          }
-          ?>
 
-        
-        <a href="?logout"><b>Log out</b></a>
-        <div class="toggle_btn">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-
-        <div class="dropdown_menu">
-  <ul> <!-- Start unordered list -->
-    <li><a href="home.php">Home</a></li>
-    <li><a href="about_us.php">About</a></li>
-    <li><a href="hero">My course</a></li>
-    <li><a href="faq.php">FAQ</a></li>
-  </ul> <!-- End unordered list -->
-</div>
-
-    </header>
 <body class="bg-primary">
-<div class="searchbar-container">
-    <!-- Search bar -->
-      <input type="text" name="" id="searchbar" placeholder="Search courses here" style="border: none; padding: 5px;">
-    </div>
+<?php
+        $name_of_user = get_name_in_header();
+        ?>
+<header>
+      <nav>
+        <div class="frame">
+          <ul>
+            <li class="listHeader" ><b></b>FreeCourse</li>
+            <li class="listHeader"><a id="index" href="home.php"><b>Home</b></a></li>
+            <li class="listHeader"><a id="about" href="mycourse.php"> <b>My Course</b></a></li>
+            <li class="listHeader" >
+            <li class="listHeader" ><b>_________________________________________</b></li>
+              <?php
+            foreach ($name_of_user as $s) {
+                $first = $s['FirstName'];
+                $last = $s['LastName'];
+                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+            }
+          ?></li>
+            <li class="listHeader" ><a href="?logout"><b>Log out</b></a></li>
+            
+          </ul>
+          <script>
+            document.getElementById("index").addEventListener("click", function(event){
+                var confirmation = confirm("Are you sure you want to leave this page?"); 
+                if (!confirmation) {
+                    event.preventDefault(); 
+                }
+            });
+            function toggleContent() {
+                const content = document.querySelector(".frameMoblie");
+                content.style.display = content.style.display === "block" ? "none" : "block";
+}
+            </script>
+        </div>
+        <img id="navmoblie" src="img/nav.png" onclick="toggleContent()" alt="">
+        <div class="frameMoblie">
+          <ul>
+            <li><?php
+            foreach ($name_of_user as $s) {
+                $first = $s['FirstName'];
+                $last = $s['LastName'];
+                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+            }
+          ?></li>
+            <li><p style="color: white">______________</p></li>
+            
+            <li style="margin-bottom: 10px;"><a href="home.php" ><b>Home</b></a></li>
+            <li style="margin-bottom: 10px;"><a href="mycourse.php" ><b>My Course</b></a></li>
+            <li><p style="color: white">______________</p></li>
+            <li style="margin: 10px;"><a href="?logout"><b>Log out</b></a></li>
+          </ul>
+        </div>
+      </nav>
+</header>
+
 
     <div class="container mt-5 bg-white p-5">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-
+            
               <?php
                 $enrolled = get_mycourse();
                  foreach ($enrolled as $e) {
@@ -110,6 +239,27 @@ if (!isset($_SESSION['email'])) {
               ?>
               </div>
     </div>
+    
+    <footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Contact Information</h4>
+                <p>Email: student@tdtu.edu.com</p>
+                <p>Phone: +1234567890</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Follow Us</h4>
+                <ul class="social-icons">
+                    <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </footer>
         <script>
     const enrollButtons = document.querySelectorAll('.btn-primary'); // Select all buttons with class 'btn-primary'
 
@@ -123,22 +273,7 @@ if (!isset($_SESSION['email'])) {
 
     const courseCards = document.querySelectorAll('.card');
 
-    // Gắn sự kiện 'input' vào search bar
-    document.getElementById('searchbar').addEventListener('input', function() {
-        const searchText = this.value.toLowerCase(); // Lấy giá trị nhập vào và chuyển thành chữ thường
 
-        // Lặp qua mỗi thẻ khóa học
-        courseCards.forEach(card => {
-            const courseTitle = card.querySelector('.card-title').innerText.toLowerCase(); // Lấy tiêu đề khóa học và chuyển thành chữ thường
-
-            // Kiểm tra xem tiêu đề khóa học có chứa từ khóa tìm kiếm không
-            if (courseTitle.includes(searchText)) {
-                card.style.display = 'block'; // Hiển thị thẻ nếu tiêu đề khớp với từ khóa tìm kiếm
-            } else {
-                card.style.display = 'none'; // Ẩn thẻ nếu không khớp
-            }
-        });
-    });
 </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

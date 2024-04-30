@@ -2,6 +2,13 @@
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+    if (isset($_GET['logout'])) {
+        $_SESSION = array();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
+    require_once('db/name_in_header_db.php');
     require_once('db/lesson_db.php');
     require_once('db/course_user.php');
     require_once('db/load_coursename_to_detaied_course.php');
@@ -10,18 +17,20 @@
     $id_course = $_GET['id_course'];
     $userEmail = $_SESSION['email'];
     $error = "";
-    if (isset($_GET['logout'])) {
-        $_SESSION = array();
-        session_destroy();
-        header("Location: login.php");
-        exit;
-    }
+    
 
     if (!isset($_SESSION['email'])) {
         header('Location:login.php');
         die();
     }
-
+      if (isset($_GET['logout'])) {
+        $_SESSION = array();
+    
+        session_destroy();
+    
+        header("Location: login.php");
+        exit;
+      }
     $lesson = get_lesson();
     $course = get_title_of_course($id_course);
     $status = get_completed_lessons();
@@ -62,199 +71,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        #searchbar {
-            width: 80%;
-            margin: 20px auto;
-            display: block;
-            outline: none;
-        }
-        *{
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+  header {
+    margin-top: 0px;
+    position: relative;
+  }
 
-        header{
-          position: relative;
-          padding: 0 2rem;
-        }
+  footer {
+    background-color: rgba(255, 255, 255,0.5);
+    margin-bottom: 0px;
+    width: 100%;
+    color: rgb(61, 60, 60);
+    padding-top: 10px;
+  }
 
-        .navbar{
-          width: 100%;
-          height: 110px;
-          max-width: 1200px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
+  nav {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+  }
+ 
+  .listHeader {
+    display: inline;
+    margin: 0 30px;
+    font-size: 25px;
+    color: white; 
+  }
+  .tableFooter {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .listFooter {
+    list-style: none;
+    margin: 20px;
+    display: center;
+  }
+  .listFooter img {
+    margin-right: 10px;
+  }
 
-        li{
-          list-style: none;
-        }
-        a{
-          text-decoration: none;
-          color: white;
-          font-size: 1rem;
-        }
-        a:hover{
-          color: blue;
-          font-size: 120%;
-        }
-        i{
-          color: white;
-        }
+  #logo1,#logo2 {
+    font-size: 25px;
+    margin: 0 5px;
+  }
 
-        .navbar .logo a{
-          font-size: 1.5rem;
-          font-weight: bold;
-        }
+  body {
+    background-image: url('/images/headerbg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
-        .navbar .links{
-          display: flex;
-          gap: 2rem;
-        }
+  a {
+    text-decoration: none;
+    color: rgb(252, 249, 249);
+    transition: all 0.9s ease;
+  }
 
-        .navbar .toggle_btn{
-          color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          display: none;
-        }
-
-        @media(max-width: 992px){
-          .navbar .links{
-            display: none;
-          }
-
-          .navbar .toggle_btn{
-            display: block;
-          }
-
-        }
-        .dropdown_menu{
-          position: absolute;
-          right: 2rem;
-          top: 60px;
-          height: 0;
-          width: 200px;
-          background-color: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(75px);
-          border-radius: 10px;
-          overflow: hidden;
-          transition: height .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .dropdown_menu li{
-          padding: 0.7rem;
-          display: flex;
-          align-items: center;
-          justify-self: center;
-        }
-
-        .dropdown_menu.open{
-          height: 200px;
-        }
-
-        body{
-          height: 100vh;
-          background-size: cover;
-          background-position: center;
-        }
-
-        @media(max-width: 170px){
-          .dropdown_menu{
-            left: 2rem;
-            width: unset;
-          }
-        }
+  a:hover {
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+  }
 
 
-        footer {
-          background-color: #333;
-          color: #fff;
-          padding: 40px 0;
-        }
+  h3 {
+    margin-bottom: 20px;
+  }
 
-        footer h4 {
-        margin-bottom: 20px;
-        }
+  
+#navmoblie,.frameMoblie{
+    display: none;
+  }
+#navmoblie:hover {
+  cursor: pointer;
+}
+  .frameMoblie ul {
+    list-style: none;
+  }
+  #navmoblie {
+  width: 32px; /* Đặt kích thước của hình ảnh là 32px */
+  height: 32px; /* Đặt kích thước của hình ảnh là 32px */
+}
 
-        footer p {
-            margin-bottom: 10px;
-        }
+  .frameMoblie {
+    margin-top: 20px;
+  }
+@media (max-width: 800px) {
 
-        .social-icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .social-icons li {
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .social-icons li:last-child {
-            margin-right: 0;
-        }
-
-        .social-icons a {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        @media (max-width: 576px) {
-            footer .container {
-                text-align: center;
-            }
-        }
-        img {
-          width:300px;
-          height:300px;
-        }
-        #enroll_button {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 0.25rem;
-            border: none;
-        }
-
-        #enroll_button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    a:hover {
+      font-size: inherit; /* Override font size change on hover */
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+    }
+    .mainsection {
+      width: 90%;
+    }
+    #picMain {
+      width: 80%;
+    }
+    
+    .frame {
+      display: none;
+    }
+    #navmoblie {
+      display: block;
+    }
+  }
+</style>
 </head>
 <body class="bg-primary">
+<?php
+      $name_of_user = get_name_in_header();
+    ?>
 
-<header class="border-bottom" id="header">
-    <div class="navbar">
-        <div class="logo"><a href="#">Free Courses</a></div>
-        <ul class="links">
-            <li><a href="home.php">Home</a></li>
-            <li><a href="about_us.php">About</a></li>
-            <li><a href="mycourse.php">My course</a></li>
-            <li><a href="faq.php">FAQ</a></li>
-        </ul>
-        <a href="?logout"><b>Log out</b></a>
-        <div class="toggle_btn">
-            <i class="fa-solid fa-bars"></i>
+<header>
+      <nav>
+        <div class="frame">
+          <ul>
+            <li class="listHeader" ><b></b>FreeCourse</li>
+            <li class="listHeader"><a id="index" href="home.php"><b>Home</b></a></li>
+            <li class="listHeader"><a id="about" href="mycourse.php"> <b>My Course</b></a></li>
+            <li class="listHeader" >
+            <li class="listHeader" ><b>_________________________________________</b></li>
+              <?php
+            foreach ($name_of_user as $s) {
+                $first = $s['FirstName'];
+                $last = $s['LastName'];
+                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+            }
+          ?></li>
+            <li class="listHeader" ><a href="?logout"><b>Log out</b></a></li>
+            
+          </ul>
+          <script>
+            document.getElementById("index").addEventListener("click", function(event){
+                var confirmation = confirm("Are you sure you want to leave this page?"); 
+                if (!confirmation) {
+                    event.preventDefault(); 
+                }
+            });
+            function toggleContent() {
+                const content = document.querySelector(".frameMoblie");
+                content.style.display = content.style.display === "block" ? "none" : "block";
+}
+            </script>
         </div>
-
-        <div class="dropdown_menu">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="about_us.php">About</a></li>
-                <li><a href="hero">My course</a></li>
-                <li><a href="faq.php">FAQ</a></li>
-            </ul>
+        <img id="navmoblie" src="img/nav.png" onclick="toggleContent()" alt="">
+        <div class="frameMoblie">
+          <ul>
+            <li><?php
+            foreach ($name_of_user as $s) {
+                $first = $s['FirstName'];
+                $last = $s['LastName'];
+                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+            }
+          ?></li>
+            <li><p style="color: white">______________</p></li>
+            
+            <li style="margin-bottom: 10px;"><a href="home.php" ><b>Home</b></a></li>
+            <li style="margin-bottom: 10px;"><a href="mycourse.php" ><b>My Course</b></a></li>
+            <li><p style="color: white">______________</p></li>
+            <li style="margin: 10px;"><a href="?logout"><b>Log out</b></a></li>
+          </ul>
         </div>
-    </div>
+      </nav>
 </header>
 <?php foreach ($course as $c) { ?>
     <div class="col mb-4 row-cols-1">
