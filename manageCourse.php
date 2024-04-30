@@ -1,18 +1,23 @@
 <?php
-require_once('db/course_db.php');
-require_once('db/manageCourse_db.php');
-
-if (session_status() == PHP_SESSION_NONE) {
+  require_once('db/course_db.php');
+  if (session_status() == PHP_SESSION_NONE) {
     session_start();
-}
-if (isset($_GET['logout'])) {
+  }
+  if (isset($_GET['logout'])) {
     $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
-?>
 
+    session_destroy();
+
+    header("Location: loginAdmin.php");
+    exit;
+  }
+
+
+  if (!isset($_SESSION['emailAdmin'])) {
+    header('Location:loginAdmin.php');
+    die();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -212,18 +217,16 @@ $courses = get_courses();
                                     <button type="submit" class="btn btn-primary">Visit</button>
                                     
                                 </form>
-		<td>
-                        <form action="db/manageCourse_db.php" method="post" class="d-inline">
-                            <input type="hidden" name="id_course" value="<?= $c['course_id'] ?>">
-                            <input type="hidden" name="action" value="edit">
-                            <button type="submit" class="btn btn-primary">Edit</button>
-                        </form>
-                        <form action="db/manageCourse_db.php" method="post" class="d-inline">
-                            <input type="hidden" name="id_course" value="<?= $c['course_id'] ?>">
-                            <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
-                        </form>
-                    </td>
+                                <form action="" method="post" class="d-inline">
+                                    <input type="hidden" name="id_course" value="<?=$id_course?>">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form action="db/deleteCourse_db.php" method="post" class="d-inline">
+                                    <input type="hidden" name="id_course" value="<?= $c['course_id'] ?>">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
+                                </form>
+
                                 <a class="card-text" href="feedbackCourse.php?id_course=<?php echo $id_course; ?>" style="color: blue; text-decoration: underline;">See feedback</a>
                             </div>
                         </div>

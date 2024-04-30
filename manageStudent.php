@@ -9,7 +9,7 @@
 
     session_destroy();
 
-    header("Location: login.php");
+    header("Location: loginAdmin.php");
     exit;
 }
 
@@ -59,15 +59,16 @@
                     
                     
                     <td>
-                        <form action="enrollment.php" method="post" class="d-inline">
-                            <input type="hidden" name="id_course" value="<?= $id_course ?>">
+                        <form action="editStudent.php?email=<?= $email ?> " method="post" class="d-inline">
+                            <input type="hidden" name="email" value="<?= $email ?>">
                             <button type="submit" class="btn btn-primary">Edit</button>
                         </form>
-                        <form action="db/delete_course.php" method="post" class="d-inline">
-                            <input type="hidden" name="id_course" value="<?= $id_course ?>">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
+                        <form action="db/deleteStudent_db.php" method="post" class="d-inline">
+                            <input type="hidden" name="email" value="<?= $email ?>">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
                         </form>
                     </td>
+
                 </tr>
             <?php
             }

@@ -14,4 +14,20 @@
          }
          return $data;
     }
+    
+    function get_student_by_email($email)
+    {
+        $sql = "SELECT * FROM students WHERE email = '$email'";
+        $conn = create_connection();
+
+        $result = $conn->query($sql);
+        $data = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
 ?>
