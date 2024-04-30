@@ -235,7 +235,7 @@
                   $description = $c['Description'];
                   $id_course = $c['course_id'];
                   $category = $c['Type'];
-                  $releaseyear = $c ['ReleaseYear'];
+                  $releaseyear = $c ['ReleaseDate'];
                   $image = $c['images'];
                   ?>
                     <div class="col mb-4">
@@ -306,9 +306,9 @@
 
             // Kiểm tra xem tiêu đề khóa học có chứa từ khóa tìm kiếm không
             if (courseTitle.includes(searchText)) {
-                card.style.display = 'block'; // Hiển thị thẻ nếu tiêu đề khớp với từ khóa tìm kiếm
+                card.style.display = 'block'; 
             } else {
-                card.style.display = 'none'; // Ẩn thẻ nếu không khớp
+                card.style.display = 'none'; 
             }
         });
     });

@@ -146,8 +146,7 @@
         <div class="frame">
           <ul>
             <li class="listHeader" ><b></b>FreeCourse</li>
-            <li class="listHeader"><a id="index" href="home.php"><b>Home</b></a></li>
-            <li class="listHeader"><a id="about" href="mycourse.php"> <b>My Course</b></a></li>
+            <li class="listHeader"><a id="index" href="administration.php"><b>Home</b></a></li>
             <li class="listHeader" >
             <li class="listHeader" ><b>_________________________________________</b></li>
              
@@ -180,39 +179,39 @@
         </div>
       </nav>
 </header>
-    <div class="container mt-5">
-        <h3 style="Color: white">Admin </h3>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Students management</h5>
-                        <p class="card-text">Add,Edit,Delete.</p>
-                        <a href="manageStudent.php" class="btn btn-primary">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                <div class="card-body">
-                        <h5 class="card-title">Lessons management</h5>
-                        <p class="card-text">Add,Edit,Delete.</p>
-                        <a href="manageLesson.php" class="btn btn-primary">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                <div class="card-body">
-                        <h5 class="card-title">Courses management</h5>
-                        <p class="card-text">Add,Edit,Delete.</p>
-                        <a href="manageCourse.php" class="btn btn-primary">View</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="container mt-5">
+      <h3 style="color: white;">Admin Dashboard</h3>
+      <div class="row mt-4">
+          <div class="col-md-4">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Students Management</h5>
+                      <p class="card-text">Add, Edit, Delete students.</p>
+                      <a href="manageStudent.php" class="btn btn-primary">Manage</a>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Lessons Management</h5>
+                      <p class="card-text">Add, Edit, Delete lessons.</p>
+                      <a href="manageLesson.php" class="btn btn-primary">Manage</a>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Courses Management</h5>
+                      <p class="card-text">Add, Edit, Delete courses.</p>
+                      <a href="manageCourse.php" class="btn btn-primary">Manage</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

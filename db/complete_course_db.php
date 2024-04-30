@@ -25,19 +25,15 @@ function isComplete ($id_course, $userEmail) {
         WHERE cl.email = '$userEmail' AND l.course_id = '$id_course'";
 
     $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $allCompleted = true;
+    if ($result->num_rows >= 0) {;
         while($row = $result->fetch_assoc()) {
             if ($row["status"] != "You have seen the video") {
-                $allCompleted = false;
-                break;
+                return false;
             }
         }
-    } else {
-        // Trả về false nếu không có bản ghi nào
-        return false;
     }
-    return $allCompleted;
+    return true;
+
 }
 
 function isButtonWork ($id_course, $userEmail) {

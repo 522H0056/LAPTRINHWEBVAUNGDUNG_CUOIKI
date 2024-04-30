@@ -38,7 +38,7 @@
     $complete_result = isComplete($id_course, $userEmail);
     $button_ressult =  isButtonWork ($id_course, $userEmail);
     if ($complete_result === false) {
-        $error = 'Please view all the lessons in this course';
+        $error = 'Please view ALL lesson in this course';
     }
 
 
@@ -48,7 +48,6 @@
             echo 'alert("You have completed this course");';
             echo '</script>';
 
-            // Chuyển hướng người dùng đến trang chính sau khi gửi phản hồi thành công
             echo '<script>';
             echo "window.location.href = 'detailed_course.php?id_course=$id_course';";
 
@@ -59,7 +58,10 @@
 
             exit(); 
         } else {
-            $error = 'Please view all the lessons in this course to make this button works.';
+             echo '<script>';
+            echo "window.location.href = 'detailed_course.php?id_course=$id_course';";
+
+            echo '</script>';
         }
     }
 ?>
@@ -282,6 +284,7 @@
                           
                             if (!$found) {
                                 echo "<p>No status found.</p>"; // Thông báo nếu không tìm thấy trạng thái
+                                $complete_result = false;
                             }
                             ?>
                         </div>

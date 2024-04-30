@@ -21,7 +21,7 @@ if(isset($_POST['save_btn'])) {
                          Title = '$title', 
                          Description = '$description', 
                          Type = '$type', 
-                         ReleaseYear = '$release_year', 
+                         ReleaseDate = '$release_year', 
                          images = '$images' 
                          WHERE course_id = '$course_id'";
         

@@ -190,8 +190,10 @@ $courses = get_courses();
     </div>
 
     <div class="container mt-5 bg-white p-5">
+    <a class="mb-3" href="addCourse.php" style="display: inline-block; background-color: #007bff; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 5px; ">Add student</a>
+
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-            
+        
 
               <?php
                  foreach ($courses as $c)
@@ -200,7 +202,7 @@ $courses = get_courses();
                   $description = $c['Description'];
                   $id_course = $c['course_id'];
                   $category = $c['Type'];
-                  $releaseyear = $c ['ReleaseYear'];
+                  $releaseyear = $c ['ReleaseDate'];
                   $image = $c['images'];
                   ?>
                     <div class="col mb-4">

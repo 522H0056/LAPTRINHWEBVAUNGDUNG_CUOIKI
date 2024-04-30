@@ -132,10 +132,6 @@
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-success" name="submit-btn" >Submit</button>
                 </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                    <textarea class="form-control" id="form4Example3" name="comment" rows="4"></textarea>
-                    <label class="form-label" for="form4Example3">You can send nothing</label>
-                </div>
             </form>
         </div>
     </div>

@@ -217,7 +217,7 @@
                 $description = $c['Description'];
                 $id_course = $c['course_id'];
                 $category = $c['Type'];
-                $releaseyear = $c['ReleaseYear'];
+                $releaseyear = $c['ReleaseDate'];
                 $image = $c['images'];
             ?>
             <div class="bg-white m-2 p-2">
