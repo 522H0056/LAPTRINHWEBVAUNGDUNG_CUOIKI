@@ -14,7 +14,7 @@
          }
          return $data;
     }
-    function get_courses_by_id($id_course)
+    function get_course_by_id($id_course)
     {
         $sql = "select * from courses where course_id = '$id_course'";
         $conn = create_connection();

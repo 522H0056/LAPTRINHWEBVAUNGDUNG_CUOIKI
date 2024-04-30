@@ -68,7 +68,7 @@ $student = get_student_by_email($user_email);
                                             echo "</script>";
                                             unset($_SESSION['status']);
                                         }
-                                        ?>
+                                    ?>
 
 
                                     

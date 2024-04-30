@@ -1,7 +1,8 @@
 <?php
 require_once('db/course_db.php');
 require_once('db/editCourse_db.php');
-$student = get_course_by_idd($user_email);
+$id_course = $_POST['id_course'];
+$course = get_course_by_id($id_course);
 
 ?>
 
@@ -26,39 +27,34 @@ $student = get_course_by_idd($user_email);
                                 <form method="post" action="" novalidate>
                                     
                                     <div class="form-outline mb-4">
-                                        <?php foreach ($student as $std): ?>
-                                            <input  name="Title" type="text" id="Title" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['FirstName']; ?>">
+                                        <?php foreach ($course as $c): ?>
+                                            <input  name="Title" type="text" id="Title" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['Title']; ?>">
                                         
                                         <label class="form-label" for="Title">Title</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                            <input name="Title" type="text" id="Title" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['Title']; ?>">
-                                            <label class="form-label" for="Title">Title</label>
-                                        </div>
-
-                                        <div class="form-outline mb-4">
-                                            <input name="Description" required type="text" id="Description" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['Description']; ?>">
+                                            <input name="Description" type="text" id="Title" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['Description']; ?>">
                                             <label class="form-label" for="Description">Description</label>
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="course_id" required type="text" id="course_id" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['course_id']; ?>" readonly>
-                                            <label class="form-label" for="course_id">Course ID</label>
+                                            <input name="course_id" required type="text" id="course_id" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['course_id']; ?>" readonly>
+                                            <label class="form-label" for="course_id">Type</label>
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="Type" required type="text" id="Type" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['Type']; ?>">
+                                            <input name="Type" required type="text" id="Type" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['Type']; ?>">
                                             <label class="form-label" for="Type">Type</label>
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="ReleaseYear" required type="text" id="ReleaseYear" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['ReleaseYear']; ?>">
+                                            <input name="ReleaseYear" required type="text" id="ReleaseYear" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['ReleaseYear']; ?>">
                                             <label class="form-label" for="ReleaseYear">Release Year</label>
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="images" required type="text" id="images" class="form-control form-control-lg" autocomplete="off" value="<?php echo $std['images']; ?>">
+                                            <input name="images" required type="text" id="images" class="form-control form-control-lg" autocomplete="off" value="<?php echo $c['images']; ?>">
                                             <label class="form-label" for="images">Images</label>
                                         </div>
 

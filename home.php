@@ -177,7 +177,8 @@
             foreach ($name_of_user as $s) {
                 $first = $s['FirstName'];
                 $last = $s['LastName'];
-                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+                echo '<span style="color: white;"><b>' . $first . ' ' . $last . '</b></span>';
+
             }
           ?></li>
             <li class="listHeader" ><a href="?logout"><b>Log out</b></a></li>
@@ -203,7 +204,7 @@
             foreach ($name_of_user as $s) {
                 $first = $s['FirstName'];
                 $last = $s['LastName'];
-                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+                echo '<span style="color: white;"><b>' . $first . ' ' . $last . '</b></span>';
             }
           ?></li>
             <li><p style="color: white">______________</p></li>

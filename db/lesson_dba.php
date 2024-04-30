@@ -1,11 +1,7 @@
 <?php
-    require_once('db.php');
-    $id_course = $_GET['id_course'];
-    function get_lesson()
+function get_lesson_by_id($lesson_id)
     {
-        
-        global $id_course; 
-        $sql = "select * from lesson WHERE course_id = $id_course";
+        $sql = "select * from lesson WHERE lesson_id = $lesson_id";
         $conn = create_connection();
 
          $result = $conn->query($sql);
@@ -17,6 +13,4 @@
          }
          return $data;
     }
-
-    
-?>
+    ?>

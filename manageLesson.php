@@ -46,6 +46,7 @@ function get_lesson()
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Lesson_id</th>
                 <th>Description</th>
                 <th>Title</th>
                 <th>Course_id</th>
@@ -61,8 +62,10 @@ function get_lesson()
                 $title = $lesson['Title'];
                 $course_id = $lesson['course_id'];
                 $video = $lesson['video'];
+                $lesson_id = $lesson['lesson_id'];
                 ?>
                 <tr>
+                    <td><?= $lesson_id ?></td>
                     <td><?= $description ?></td>
                     <td><?= $title ?></td>
                     <td><?= $course_id ?></td>
@@ -71,12 +74,12 @@ function get_lesson()
                     </div></td>
                     
                     <td>
-                        <form action="enrollment.php" method="post" class="d-inline">
+                        <form action="editLesson.php?lesson_id=<?= $lesson_id ?>" method="post" class="d-inline">
                             <input type="hidden" name="id_course" value="<?= $course_id ?>">
-                            <button type="submit" class="btn btn-primary">Edit</button>
+                            <button type="submit" class="btn btn-primary mb-2">Edit</button>
                         </form>
-                        <form action="db/delete_course.php" method="post" class="d-inline">
-                            <input type="hidden" name="id_course" value="<?= $course_id ?>">
+                        <form action="db/deleteLesson_db.php" method="post" class="d-inline">
+                            <input type="hidden" name="lesson_id" value="<?= $lesson_id ?>">
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
                         </form>
                     </td>

@@ -196,7 +196,7 @@
             foreach ($name_of_user as $s) {
                 $first = $s['FirstName'];
                 $last = $s['LastName'];
-                echo '<a href="?logout"><b>' . $first . ' ' . $last . '</b></a>';
+                echo '<span><b>' . $first . ' ' . $last . '</b></span>';
             }
           ?></li>
             <li><p style="color: white">______________</p></li>
@@ -229,7 +229,7 @@
                     <?php
                     
                     foreach ($feedbacks as $f) {
-                        echo '<p class="card-text">Anonymous user</p>';
+                        echo '<p class="card-text"><strong>User:</strong> ' . $f['email'] . '</p>';
                         echo '<p class="card-text"><strong>Rating:</strong> ' . $f['rating'] . '</p>';
                         echo '<p class="card-text"><strong>Comment:</strong> ' . $f['comment'] . '</p>';
 

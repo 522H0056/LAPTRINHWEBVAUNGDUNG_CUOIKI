@@ -53,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-12">
                                 <div class="mb-4">
                                     <h3>Sign in</h3>
-                                    <p>Don't have an account? <a href="register.php">Sign up</a></p>
                                 </div>
                             </div>
                         </div>
@@ -86,13 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
                         </form>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
-                                    <a href="#!">Forgot password</a>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             
                         </div>

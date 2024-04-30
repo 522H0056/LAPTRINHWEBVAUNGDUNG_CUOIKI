@@ -212,12 +212,7 @@ $courses = get_courses();
                                 <p class="card-text">Id course:<?=$id_course?> </p>
                                 <p class="card-text">Category: <?=$category?>  </p>
                                 <p class="card-text">Release: <?=$releaseyear?>  </p>
-                                <form action="enrollment.php" method="post">
-                                    <input type="hidden" name="id_course" value="<?= $id_course ?>">
-                                    <button type="submit" class="btn btn-primary">Visit</button>
-                                    
-                                </form>
-                                <form action="" method="post" class="d-inline">
+                                <form action="editCourse.php?id_course=<?= $id_course ?>" method="post" class="d-inline">
                                     <input type="hidden" name="id_course" value="<?=$id_course?>">
                                     <button type="submit" class="btn btn-primary">Edit</button>
                                 </form>
@@ -227,7 +222,6 @@ $courses = get_courses();
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
                                 </form>
 
-                                <a class="card-text" href="feedbackCourse.php?id_course=<?php echo $id_course; ?>" style="color: blue; text-decoration: underline;">See feedback</a>
                             </div>
                         </div>
                     </div>
@@ -236,36 +230,6 @@ $courses = get_courses();
               ?>
         </div>
     </div>
-    <script>
-    const enrollButtons = document.querySelectorAll('.btn-primary'); // Select all buttons with class 'btn-primary'
-
-    enrollButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const courseId = this.parentNode.querySelector('input[name="id_course"]').value; // Get the course ID from the hidden input
-            window.location.href = "detailed_course.php?id_course=" + courseId; // Redirect to detailed_course.php with the course ID
-        });
-    });
-
-    const courseCards = document.querySelectorAll('.card');
-
-    // Gắn sự kiện 'input' vào search bar
-    document.getElementById('searchbar').addEventListener('input', function() {
-        const searchText = this.value.toLowerCase(); // Lấy giá trị nhập vào và chuyển thành chữ thường
-
-        // Lặp qua mỗi thẻ khóa học
-        courseCards.forEach(card => {
-            const courseTitle = card.querySelector('.card-title').innerText.toLowerCase(); // Lấy tiêu đề khóa học và chuyển thành chữ thường
-
-            // Kiểm tra xem tiêu đề khóa học có chứa từ khóa tìm kiếm không
-            if (courseTitle.includes(searchText)) {
-                card.style.display = 'block'; // Hiển thị thẻ nếu tiêu đề khớp với từ khóa tìm kiếm
-            } else {
-                card.style.display = 'none'; // Ẩn thẻ nếu không khớp
-            }
-        });
-    });
-</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

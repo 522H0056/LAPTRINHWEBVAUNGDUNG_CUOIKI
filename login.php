@@ -98,7 +98,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
-                                    <a href="#!">Forgot password</a>
+                                    <a href="forgotpass.php">Forgot password</a>
                                 </div>
                             </div>
                         </div>
